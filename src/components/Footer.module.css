@@ -1,0 +1,38 @@
+.footer {
+  margin-top: 120px;
+  border-top: 1px solid
+    light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-5));
+}
+
+.inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: var(--mantine-spacing-xl);
+  padding-bottom: var(--mantine-spacing-xl);
+
+  @media (max-width: $mantine-breakpoint-xs) {
+    flex-direction: column;
+  }
+}
+
+.links {
+  @media (max-width: $mantine-breakpoint-xs) {
+    margin-top: var(--mantine-spacing-md);
+  }
+}
+
+.footer .img-wrapper {
+    width: 50px; /* Set the visible width */
+    height: 50px; /* Set the visible height */
+    overflow: hidden; /* Ensure no overflow */
+    position: relative;
+  }
+  
+  .footer .img {
+    position: absolute;
+    top: 0px; /* Adjust vertical position to show the logo */
+    left: -100px; /* Adjust horizontal position for cropping */
+    height: 40px;
+    width: auto;
+  }
