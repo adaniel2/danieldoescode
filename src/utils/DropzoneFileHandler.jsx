@@ -1,5 +1,5 @@
-import { PCDLoader } from 'three/addons/loaders/PCDLoader.js';
-import { XYZLoader } from 'three/addons/loaders/XYZLoader.js'; // Import XYZLoader
+import { PCDLoader } from "three/addons/loaders/PCDLoader.js";
+import { XYZLoader } from "three/addons/loaders/XYZLoader.js"; // Import XYZLoader
 
 export const DropzoneFileHandler = (
   acceptedFiles,
@@ -69,7 +69,8 @@ export const DropzoneFileHandler = (
         // Use PCDLoader to parse the file
         console.log("PCD file detected!");
         const loader = new PCDLoader();
-        geometry = loader.parse(data); // PCDLoader gives BufferGeometry directly
+        const points = loader.parse(data); // PCDLoader gives Points object
+        geometry = points.geometry; // Extract geometry from Points object
 
         // console.log("PCD Geometry Loaded:", geometry);
       } else if (fileType == ".geojson") {
