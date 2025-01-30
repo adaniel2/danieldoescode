@@ -63,7 +63,7 @@ export function Header() {
             src={VoyisLogo}
             alt="Voyis logo"
             style={{ height: 36, cursor: "pointer" }}
-            data-active={active === undefined}
+            // data-active={active === undefined}
             // onClick={() => (window.location.href = "/")}
           />
         </Link>

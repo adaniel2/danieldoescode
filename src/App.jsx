@@ -4,6 +4,7 @@ import { MantineProvider, AppShell } from "@mantine/core";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import '@mantine/core/styles.css';
+import '@mantine/dropzone/styles.css';
 import "./index.css";
 
 function App({ children }) {

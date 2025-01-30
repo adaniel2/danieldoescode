@@ -1,12 +1,9 @@
+import DZ from '../components/Dropzone'
 import './pages.css'
 
 function GIS () {
     return (
-        <div>
-            <p>
-                GIS!
-            </p>
-        </div>
+        <DZ page={"GIS"}/>
     )
 }
 
