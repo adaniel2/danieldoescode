@@ -15,23 +15,12 @@ function PCV() {
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
   const [geometry, setGeometry] = useState(null);
-  const [pointsData, setPointsData] = useState([]);
-  
-  const processFileCallback = (fileType, dataFrame) => {
-    console.log(`Processed ${fileType} Data:`, dataFrame);
 
-    if (fileType === ".xyz") {
-      console.log("Total points loaded:", dataFrame.length);
-      console.log("Sample point:", dataFrame[0]);
-      console.log("First few points:", dataFrame.slice(0, 10));
+  const processFileCallback = (fileType, geometry) => {
+    console.log(`Processed ${fileType} Data:`, geometry);
 
-
-      setPointsData(dataFrame);
-    }
-    else if (fileType === '.pcd') {
-        const bufferGeometry = dataFrame.geometry;  // Extract raw geometry
-        const points = bufferGeometry.attributes.position.array;
-        console.log(points);
+    if (geometry) {
+      setGeometry(geometry);
     }
   };
 
@@ -52,7 +41,7 @@ function PCV() {
   return (
     <>
       <div>
-        <PointCloudViewer pointsData={pointsData} />
+        <PointCloudViewer geometry={geometry} />
       </div>
       <div>
         {files.length != 0 && !loading && (

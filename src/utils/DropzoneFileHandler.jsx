@@ -40,20 +40,15 @@ export const DropzoneFileHandler = (
 
       // Handle file types
       if (fileType == ".xyz") {
-        console.log("XYZ file detected!");
-
-        // console.log(data);
-
         // Direct text manipulation
-        const dataFrame = data.split("\n").map((line) => {
-          const lineArray = line.trim().split(" ");
-          return lineArray.map((num) => parseFloat(num));
-        }); // trim required because of potential \r
+        // const dataFrame = data.split("\n").map((line) => {
+        //   const lineArray = line.trim().split(" ");
+        //   return lineArray.map((num) => parseFloat(num));
+        // }); // trim required because of potential \r
 
-        processFileCallback(fileType, dataFrame);
-
-        // const loader = new XYZLoader();
-        // geometry = loader.parse(data); // Convert XYZ to BufferGeometry
+        console.log("XYZ file detected!");
+        const loader = new XYZLoader();
+        geometry = loader.parse(data); // Convert XYZ to BufferGeometry
       } else if (fileType == ".pcd") {
         // inspect header to determine ASCII vs. Binary
         // const headerDataRegex = new RegExp("(DATA)\\s(.*)");
@@ -74,8 +69,7 @@ export const DropzoneFileHandler = (
         // Use PCDLoader to parse the file
         console.log("PCD file detected!");
         const loader = new PCDLoader();
-        const points = loader.parse(data); // Returns Points object instead of BufferGeometry
-        geometry = points.geometry; // Extract BufferGeometry from Points object
+        geometry = loader.parse(data); // PCDLoader gives BufferGeometry directly
 
         // console.log("PCD Geometry Loaded:", geometry);
       } else if (fileType == ".geojson") {
