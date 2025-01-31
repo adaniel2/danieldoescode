@@ -26,21 +26,6 @@ export function Header() {
   const location = useLocation();
   const [active, setActive] = useState(location.pathname);
 
-  // const items = links.map((link) => (
-  //   <a
-  //     key={link.label}
-  //     href={link.link}
-  //     className={classes.link}
-  //     data-active={active === link.link || undefined}
-  //     onClick={(event) => {
-  //       event.preventDefault();
-  //       setActive(link.link);
-  //     }}
-  //   >
-  //     {link.label}
-  //   </a>
-  // ));
-
   const items = links.map((link) => (
     <Link
       key={link.label}

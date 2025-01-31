@@ -1,24 +1,29 @@
-.closeButton {
+/* Wrapper for Positioning */
+.buttonContainer {
   position: absolute;
   top: 50px;
   right: 50px;
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Spacing between buttons */
   z-index: 10000;
-  background-color: transparent;
-  transition: all 0.15s ease-in-out;
-  border: 2px solid #343434;
-  border-radius: 6px;
+}
+
+/* Close Button */
+.closeButton {
   cursor: pointer;
   color: #343434;
-  font-size: 16px;
-  font-weight: bold;
-  opacity: 0.4;
+  opacity: 0.6;
+  transition: all 0.15s ease-in-out;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
 }
 
 .closeButton:hover {
-  background-color: #a7a7a7; /* Background changes on hover */
-  opacity: 0.9; /* Button fades slightly */
-  transform: scale(1.1); /* Slightly enlarge on hover */
-  color: #343434;
+  background-color: #d2d2d2;
+  opacity: 1;
+  transform: scale(1.2);
 }
 
 .closeButton:focus,
@@ -27,12 +32,27 @@
 }
 
 .overlay {
-  position: "fixed";
+  position: fixed;
   top: 0;
   left: 0;
-  width: "100vw";
-  height: "100vh";
-  background: "#ffffff";
+  width: 100vw;
+  height: 100vh;
+  background: #ffffff;
   z-index: 9999;
-  overflow: "hidden"; /*no scrollbars in this overlay*/
+  overflow: hidden; /*no scrollbars in this overlay*/
+}
+
+/* Ensure the Canvas Takes Up Full Space */
+.canvasContainer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Dark Mode Switch - Position Fixed so it Doesn't Affect Layout */
+/* Dark Mode Toggle */
+.darkModeToggle {
+  cursor: pointer;
 }

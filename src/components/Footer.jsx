@@ -4,7 +4,6 @@ import {
   IconBrandYoutube,
 } from "@tabler/icons-react";
 import { ActionIcon, Container, Group } from "@mantine/core";
-// import { MantineLogo } from "@mantinex/mantine-logo";
 import classes from "./Footer.module.css";
 import VoyisLogo from "../assets/voyis_logo.png";
 

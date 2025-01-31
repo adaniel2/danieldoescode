@@ -6,7 +6,7 @@ import * as THREE from "three";
 
 import { DropzoneFileHandler } from "../utils/DropzoneFileHandler";
 import PointCloudViewerLegacy from "../components/legacy/PointCloudViewer";
-import PointCloudViewer from "../components/PointCloudViewer" //
+import PointCloudViewer from "../components/PointCloudViewer"
 import DZ from "../components/Dropzone";
 
 import "./pages.css";
@@ -20,10 +20,6 @@ function PCV() {
 
   const processFileCallback = (fileType, data) => {
     console.log(`Processed ${fileType} Data:`, data);
-
-    // if (geometry) {
-    //   setGeometry(geometry);
-    // }
 
     // Now data is a THREE.Points for XYZ or PCD
     if (data && data.isPoints) {
@@ -45,26 +41,6 @@ function PCV() {
     setGeometry(null); // clear geometry
     setPoints(null); // clear points
   };
-
-  // return (
-  //   <>
-  //     {/* Only show the dropzone if we have no geometry */}
-  //     {!geometry && !loading && (
-  //       <DZ page="PCV" onDrop={handleDrop} loading={loading} />
-  //     )}
-
-  //     {/* If the user has loaded a file, show a clear button somewhere */}
-  //     {files.length !== 0 && !loading && (
-  //       <Button onClick={handleClear}>Clear Files</Button>
-  //     )}
-
-  //     {/* Fullscreen 3D viewer overlays everything if we have geometry */}
-  //     <PointCloudViewer
-  //       geometry={geometry}
-  //       onClose={handleClear} // or a separate "close viewer" method
-  //     />
-  //   </>
-  // );
 
   return (
     <>

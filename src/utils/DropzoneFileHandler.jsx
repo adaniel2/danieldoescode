@@ -27,51 +27,48 @@ export const DropzoneFileHandler = (
 
     if (!fileType) {
       console.error("Unsupported file type:", file.path);
+      alert(`Error: Unsupported file type: ${file.path}`);
       return;
     }
 
     reader.onload = (e) => {
       setLoading(false); // End loading once file is processed
-
-      // Process file data
       const data = e.target.result;
+      let points = null;
 
-      // geometry
-      let geometry = null;
+      try {
+        if (fileType === ".xyz") {
+          console.log("XYZ file detected!");
+          const xyzLoader = new XYZLoader();
+          const geometry = xyzLoader.parse(data);
 
-      // Handle file types
-      if (fileType === ".xyz") {
-        console.log("XYZ file detected!");
-        const xyzLoader = new XYZLoader();
-        // xyzLoader returns a BufferGeometry
-        const geometry = xyzLoader.parse(data);
-        // Wrap geometry in Three.Points for consistency
-        const points = new THREE.Points(
-          geometry,
-          new THREE.PointsMaterial({
-            size: 0.005,
-            color: 0xffffff,
-            sizeAttenuation: true,
-            vertexColors: true
-          })
-        );
-        processFileCallback(fileType, points);
-      } else if (fileType === ".pcd") {
-        console.log("PCD file detected!");
+          // Wrap geometry in THREE.Points for consistency
+          points = new THREE.Points(
+            geometry,
+            new THREE.PointsMaterial({
+              size: 0.005,
+              color: 0xffffff,
+              sizeAttenuation: true,
+              vertexColors: true,
+            })
+          );
 
-        const pcdLoader = new PCDLoader();
+          
+          processFileCallback(fileType, points);
+        } else if (fileType === ".pcd") {
+          console.log("PCD file detected!");
+          const pcdLoader = new PCDLoader();
 
-        // pcdLoader returns a full THREE.Points
-        const points = pcdLoader.parse(data);
-        processFileCallback(fileType, points);
-      } else if (fileType == ".geojson") {
-        try {
+          points = pcdLoader.parse(data); // PCDLoader returns a THREE.Points
+          processFileCallback(fileType, points);
+        } else if (fileType === ".geojson") {
+          console.log("GeoJSON file detected!");
           const json = JSON.parse(data);
-          console.log("GeoJSON Data:", json);
           processFileCallback(fileType, json);
-        } catch (error) {
-          console.error("Invalid GeoJSON file:", error);
         }
+      } catch (error) {
+        console.error(`Error processing ${fileType} file:`, error);
+        alert(`Error processing file: ${error.message}`);
       }
     };
 
@@ -83,10 +80,15 @@ export const DropzoneFileHandler = (
     };
 
     // Use `readAsArrayBuffer` for `.pcd` files, `readAsText` for others
-    if (fileType === ".pcd") {
-      reader.readAsArrayBuffer(file); // PCDLoader needs a binary buffer
-    } else {
-      reader.readAsText(file); // XYZ & GeoJSON are text-based
+    try {
+      if (fileType === ".pcd") {
+        reader.readAsArrayBuffer(file); // PCDLoader needs a binary buffer
+      } else {
+        reader.readAsText(file); // XYZ & GeoJSON are text-based
+      }
+    } catch (error) {
+      console.error("Error reading file:", error);
+      alert(`Error reading file: ${error.message}`);
     }
   });
 };
