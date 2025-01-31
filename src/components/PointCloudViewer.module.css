@@ -5,6 +5,7 @@
   right: 50px;
   display: flex;
   align-items: center;
+  flex-direction: column; /* Stack items vertically */
   gap: 10px; /* Spacing between buttons */
   z-index: 10000;
 }
@@ -20,10 +21,20 @@
   height: 30px;
 }
 
+/* Dark Mode Close Button */
+.darkCloseButton {
+  color: #cecece !important; /* Light color for dark mode */
+  transition: all 0.15s ease-in-out;
+}
+
+.darkCloseButton:hover {
+  background-color: #3f3f3f !important; /* Darker background on hover */
+}
+
 .closeButton:hover {
   background-color: #d2d2d2;
-  opacity: 1;
-  transform: scale(1.2);
+  opacity: 0.5;
+  transform: scale(1.1);
 }
 
 .closeButton:focus,
@@ -37,7 +48,6 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: #ffffff;
   z-index: 9999;
   overflow: hidden; /*no scrollbars in this overlay*/
 }
@@ -51,7 +61,6 @@
   justify-content: center;
 }
 
-/* Dark Mode Switch - Position Fixed so it Doesn't Affect Layout */
 /* Dark Mode Toggle */
 .darkModeToggle {
   cursor: pointer;

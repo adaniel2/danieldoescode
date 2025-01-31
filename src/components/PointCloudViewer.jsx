@@ -26,11 +26,10 @@ export default function Viewer({ points, onClose }) {
 
   return (
     <div className={classes.overlay}>
-      {/* Top-right button container */}
       <div className={classes.buttonContainer}>
         <IoIosCloseCircleOutline
           onClick={onClose}
-          className={classes.closeButton}
+          className={`${classes.closeButton} ${isDarkMode ? classes.darkCloseButton : ""}`}
         />
         <DarkModeSwitch
           checked={isDarkMode}
