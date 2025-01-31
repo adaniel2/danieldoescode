@@ -1,3 +1,4 @@
+// Footer.jsx
 import {
   IconBrandInstagram,
   IconBrandTwitter,

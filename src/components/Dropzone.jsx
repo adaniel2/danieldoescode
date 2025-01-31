@@ -1,3 +1,4 @@
+// Dropzone.jsx
 import { Group, Text } from "@mantine/core";
 import { IconUpload, IconPhoto, IconX } from "@tabler/icons-react";
 import { Dropzone, IMAGE_MIME_TYPE } from "@mantine/dropzone";

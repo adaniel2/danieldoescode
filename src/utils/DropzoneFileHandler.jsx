@@ -1,3 +1,4 @@
+// DropzoneFileHandler.jsx
 import { PCDLoader } from "three/addons/loaders/PCDLoader.js";
 import { XYZLoader } from "three/addons/loaders/XYZLoader.js"; // Import XYZLoader
 import * as THREE from "three";
