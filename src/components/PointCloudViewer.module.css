@@ -1,0 +1,38 @@
+.closeButton {
+  position: absolute;
+  top: 50px;
+  right: 50px;
+  z-index: 10000;
+  background-color: transparent;
+  transition: all 0.15s ease-in-out;
+  border: 2px solid #343434;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #343434;
+  font-size: 16px;
+  font-weight: bold;
+  opacity: 0.4;
+}
+
+.closeButton:hover {
+  background-color: #a7a7a7; /* Background changes on hover */
+  opacity: 0.9; /* Button fades slightly */
+  transform: scale(1.1); /* Slightly enlarge on hover */
+  color: #343434;
+}
+
+.closeButton:focus,
+.closeButton:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+.overlay {
+  position: "fixed";
+  top: 0;
+  left: 0;
+  width: "100vw";
+  height: "100vh";
+  background: "#ffffff";
+  z-index: 9999;
+  overflow: "hidden"; /*no scrollbars in this overlay*/
+}

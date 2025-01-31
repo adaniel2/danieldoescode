@@ -5,7 +5,8 @@ import { OrbitControls, Points, PointMaterial } from "@react-three/drei";
 import * as THREE from "three";
 
 import { DropzoneFileHandler } from "../utils/DropzoneFileHandler";
-import PointCloudViewer from "../components/PointCloudViewer";
+import PointCloudViewerLegacy from "../components/legacy/PointCloudViewer";
+import PointCloudViewer from "../components/PointCloudViewer" //
 import DZ from "../components/Dropzone";
 
 import "./pages.css";
@@ -15,12 +16,18 @@ function PCV() {
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
   const [geometry, setGeometry] = useState(null);
+  const [points, setPoints] = useState(null);
 
-  const processFileCallback = (fileType, geometry) => {
-    console.log(`Processed ${fileType} Data:`, geometry);
+  const processFileCallback = (fileType, data) => {
+    console.log(`Processed ${fileType} Data:`, data);
 
-    if (geometry) {
-      setGeometry(geometry);
+    // if (geometry) {
+    //   setGeometry(geometry);
+    // }
+
+    // Now data is a THREE.Points for XYZ or PCD
+    if (data && data.isPoints) {
+      setPoints(data);
     }
   };
 
@@ -35,22 +42,37 @@ function PCV() {
 
   const handleClear = () => {
     setFiles([]); // Clear all files
-    setGeometry(null);
+    setGeometry(null); // clear geometry
+    setPoints(null); // clear points
   };
+
+  // return (
+  //   <>
+  //     {/* Only show the dropzone if we have no geometry */}
+  //     {!geometry && !loading && (
+  //       <DZ page="PCV" onDrop={handleDrop} loading={loading} />
+  //     )}
+
+  //     {/* If the user has loaded a file, show a clear button somewhere */}
+  //     {files.length !== 0 && !loading && (
+  //       <Button onClick={handleClear}>Clear Files</Button>
+  //     )}
+
+  //     {/* Fullscreen 3D viewer overlays everything if we have geometry */}
+  //     <PointCloudViewer
+  //       geometry={geometry}
+  //       onClose={handleClear} // or a separate "close viewer" method
+  //     />
+  //   </>
+  // );
 
   return (
     <>
-      <div>
-        <PointCloudViewer geometry={geometry} />
-      </div>
-      <div>
-        {files.length != 0 && !loading && (
-          <Button onClick={handleClear}>Clear Files</Button>
-        )}
-        {!(files.length != 0 && !loading) && (
-          <DZ page={"PCV"} onDrop={handleDrop} loading={loading} />
-        )}
-      </div>
+      {!points && !loading && <DZ onDrop={handleDrop} loading={loading} />}
+      {files.length !== 0 && !loading && (
+        <Button onClick={handleClear}>Clear Files</Button>
+      )}
+      <PointCloudViewer points={points} onClose={handleClear} />
     </>
   );
 }

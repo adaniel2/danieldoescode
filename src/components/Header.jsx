@@ -17,7 +17,7 @@ import "@mantinex/mantine-logo/styles.css";
 
 const links = [
   { link: "/gis", label: "GIS" },
-  { link: "/3d-pcv", label: "3D PCV" },
+  { link: "/3d-pcv", label: "3D Viewer" },
 ];
 
 export function Header() {

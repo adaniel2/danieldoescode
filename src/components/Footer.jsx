@@ -11,7 +11,7 @@ import VoyisLogo from "../assets/voyis_logo.png";
 export function Footer() {
   return (
     <div className={classes.footer}>
-      <Container className={classes.inner}>
+      <Container size="lg" className={classes.inner}>
         {/* <MantineLogo size={28} /> */}
         <div className={classes["img-wrapper"]}>
           <img src={VoyisLogo} alt="Voyis logo" className={classes.img} />

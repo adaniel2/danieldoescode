@@ -1,7 +1,7 @@
 .footer {
-  margin-top: 120px;
   border-top: 1px solid
     light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-5));
+    z-index: 1000;
 }
 
 .inner {
@@ -23,16 +23,16 @@
 }
 
 .footer .img-wrapper {
-    width: 50px; /* Set the visible width */
-    height: 50px; /* Set the visible height */
-    overflow: hidden; /* Ensure no overflow */
-    position: relative;
-  }
-  
-  .footer .img {
-    position: absolute;
-    top: 0px; /* Adjust vertical position to show the logo */
-    left: -100px; /* Adjust horizontal position for cropping */
-    height: 40px;
-    width: auto;
-  }
+  width: 50px; /* Set the visible width */
+  height: 50px; /* Set the visible height */
+  overflow: hidden; /* Ensure no overflow */
+  position: relative;
+}
+
+.footer .img {
+  position: absolute;
+  top: 0px; /* Adjust vertical position to show the logo */
+  left: -100px; /* Adjust horizontal position for cropping */
+  height: 40px;
+  width: auto;
+}

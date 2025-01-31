@@ -1,5 +1,6 @@
 import { PCDLoader } from "three/addons/loaders/PCDLoader.js";
 import { XYZLoader } from "three/addons/loaders/XYZLoader.js"; // Import XYZLoader
+import * as THREE from "three";
 
 export const DropzoneFileHandler = (
   acceptedFiles,
@@ -39,40 +40,30 @@ export const DropzoneFileHandler = (
       let geometry = null;
 
       // Handle file types
-      if (fileType == ".xyz") {
-        // Direct text manipulation
-        // const dataFrame = data.split("\n").map((line) => {
-        //   const lineArray = line.trim().split(" ");
-        //   return lineArray.map((num) => parseFloat(num));
-        // }); // trim required because of potential \r
-
+      if (fileType === ".xyz") {
         console.log("XYZ file detected!");
-        const loader = new XYZLoader();
-        geometry = loader.parse(data); // Convert XYZ to BufferGeometry
-      } else if (fileType == ".pcd") {
-        // inspect header to determine ASCII vs. Binary
-        // const headerDataRegex = new RegExp("(DATA)\\s(.*)");
-        // const headerDataType = data.match(headerDataRegex)[2];
-        // console.log(headerDataType);
-
-        // switch (headerDataType) {
-        //   case "ascii":
-        //     break;
-        //   case "binary_compressed":
-        //     break;
-        //   case "binary":
-        //     break;
-        //   default:
-        //     // do nothing
-        // }
-
-        // Use PCDLoader to parse the file
+        const xyzLoader = new XYZLoader();
+        // xyzLoader returns a BufferGeometry
+        const geometry = xyzLoader.parse(data);
+        // Wrap geometry in Three.Points for consistency
+        const points = new THREE.Points(
+          geometry,
+          new THREE.PointsMaterial({
+            size: 0.005,
+            color: 0xffffff,
+            sizeAttenuation: true,
+            vertexColors: true
+          })
+        );
+        processFileCallback(fileType, points);
+      } else if (fileType === ".pcd") {
         console.log("PCD file detected!");
-        const loader = new PCDLoader();
-        const points = loader.parse(data); // PCDLoader gives Points object
-        geometry = points.geometry; // Extract geometry from Points object
 
-        // console.log("PCD Geometry Loaded:", geometry);
+        const pcdLoader = new PCDLoader();
+
+        // pcdLoader returns a full THREE.Points
+        const points = pcdLoader.parse(data);
+        processFileCallback(fileType, points);
       } else if (fileType == ".geojson") {
         try {
           const json = JSON.parse(data);
@@ -81,14 +72,7 @@ export const DropzoneFileHandler = (
         } catch (error) {
           console.error("Invalid GeoJSON file:", error);
         }
-        return;
       }
-
-      if (geometry) {
-        processFileCallback(fileType, geometry);
-      }
-
-      // Show a summary of data w/ option to close menu
     };
 
     reader.onprogress = (e) => {
