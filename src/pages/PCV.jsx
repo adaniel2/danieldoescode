@@ -11,7 +11,6 @@ import PointCloudViewer from "../components/PointCloudViewer"
 import DZ from "../components/Dropzone";
 
 import "./pages.css";
-import { Button } from "@mantine/core";
 
 function PCV() {
   const [files, setFiles] = useState([]);
@@ -46,9 +45,9 @@ function PCV() {
   return (
     <>
       {!points && !loading && <DZ onDrop={handleDrop} loading={loading} />}
-      {files.length !== 0 && !loading && (
+      {/* {files.length !== 0 && !loading && (
         <Button onClick={handleClear}>Clear Files</Button>
-      )}
+      )} */}
       <PointCloudViewer points={points} onClose={handleClear} />
     </>
   );

@@ -1,90 +1,107 @@
 // Dropzone.jsx
-import { Group, Text } from "@mantine/core";
-import { IconUpload, IconPhoto, IconX } from "@tabler/icons-react";
-import { Dropzone, IMAGE_MIME_TYPE } from "@mantine/dropzone";
+import { useDropzone } from "react-dropzone";
+import { Group, Text, Stack } from "@mantine/core";
+import { IconPhoto } from "@tabler/icons-react";
 import { useLocation } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useCallback } from "react";
+import { CiFileOn } from "react-icons/ci";
+import { TbFileUpload } from "react-icons/tb";
 
 const dropZoneText = {
   "/gis": {
-    title: "Drag and drop GIS Data here",
+    title: "Upload GIS Data",
     subtitle: "Accepted format(s): GeoJSON",
     accept: {
       "application/geo+json": [".geojson"],
+      "application/json": [".json"],
     },
   },
   "/3d-pcv": {
-    title: "Drag and drop Point Cloud Data here",
+    title: "Upload Point Cloud Data",
     subtitle: "Accepted format(s): .xyz or .pcd",
-    accept: {
-      "chemical/x-xyz": [".xyz"],
-      "application/x-pcd": [".pcd"],
-    },
+    accept: { "chemical/x-xyz": [".xyz"], "application/x-pcd": [".pcd"] },
   },
 };
 
 export function DZ(props) {
-  //   const page = props.page;
-  //   const { title, subtitle } = dropZoneText[page];
   const location = useLocation();
-  const currPage = dropZoneText[location.pathname];
-
-  // Log changes to the loading state for debugging
-  //   useEffect(() => {
-  //     console.log("Loading state changed:", loading);
-  //   }, [loading]);
-
-//   const handleDrop = (acceptedFiles) => {
-//     onDrop(acceptedFiles); // Call the parent handler
-//   };
-
-  const handleReject = (files) => {
-    console.log("Rejected files:", files); d
+  const currPage = dropZoneText[location.pathname] || {
+    title: "Drag and drop files here",
+    subtitle: "Accepted formats will depend on the page",
+    accept: {},
   };
 
-  return (
-    <Dropzone
-    //   onDrop={handleDrop}
-      onReject={handleReject}
-      maxSize={200 * 1024 ** 2} // 200 mb limit
-      accept={currPage.accept}
-    //   loading={loading} // Pass local loading state to Dropzone
-      {...props}
-    >
-      <Group
-        justify="center"
-        gap="xl"
-        mih={220}
-        style={{ pointerEvents: "none" }}
-      >
-        <Dropzone.Accept>
-          <IconUpload
-            size={52}
-            color="var(--mantine-color-blue-6)"
-            stroke={1.5}
-          />
-        </Dropzone.Accept>
-        <Dropzone.Reject>
-          <IconX size={52} color="var(--mantine-color-red-6)" stroke={1.5} />
-        </Dropzone.Reject>
-        <Dropzone.Idle>
-          <IconPhoto
-            size={52}
-            color="var(--mantine-color-dimmed)"
-            stroke={1.5}
-          />
-        </Dropzone.Idle>
+  const onDrop = useCallback(
+    (acceptedFiles, rejectedFiles) => {
+      console.log("Rejected files:", rejectedFiles);
 
-        <div>
-          <Text size="xl" inline>
+      if (rejectedFiles.length > 0) {
+        rejectedFiles.forEach(({ file, errors }) => {
+          console.error(`File ${file.name} was rejected due to:`, errors);
+        });
+      }
+
+      if (props.onDrop) {
+        props.onDrop(acceptedFiles);
+      }
+    },
+    [props.onDrop]
+  );
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    accept: currPage.accept,
+    maxSize: 200 * 1024 ** 2, // 200 MB limit
+  });
+
+  return (
+    <div
+      style={{
+        position: "absolute",
+        top: 0,
+        left: 0,
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        overflow: "hidden",
+      }}
+    >
+      <div
+        {...getRootProps({
+          className: `dropzone ${isDragActive ? "drag-active" : ""}`,
+        })}
+      >
+        <input {...getInputProps()} />
+        <Stack align="center" style={{ pointerEvents: "none", gap: '2px'}}>
+          {isDragActive ? (
+            <TbFileUpload size={52} />
+          ) : (
+            <CiFileOn
+              size={52}
+              color="var(--mantine-color-dimmed)"
+              stroke={1.5}
+            />
+          )}
+          <Text
+            size="xl"
+            align="center"
+            style={{ maxWidth: "100%", wordWrap: "break-word" }}
+          >
             {currPage.title}
           </Text>
-          <Text size="sm" c="dimmed" inline mt={7}>
+          <Text
+            size="sm"
+            color="dimmed"
+            align="center"
+            style={{ maxWidth: "100%", wordWrap: "break-word" }}
+          >
             {currPage.subtitle}
           </Text>
-        </div>
-      </Group>
-    </Dropzone>
+        </Stack>
+      </div>
+    </div>
   );
 }
 

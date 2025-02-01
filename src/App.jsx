@@ -17,13 +17,13 @@ function App({ children }) {
       <Header />
       <div
         style={{
-          marginTop: 56, // push below fixed header
-          minHeight: "calc(100vh - 56px)",
+          marginTop: 56,
+          height: "calc(100vh - 56px)", // Changed from min-height
           display: "flex",
           flexDirection: "column",
         }}
       >
-        <main style={{ flex: 1 }}>{children}</main>
+        <main style={{ flex: 1, overflow: "hidden" }}>{children}</main>
 
         <Footer />
       </div>

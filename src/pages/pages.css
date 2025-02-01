@@ -1,3 +1,5 @@
+/* pages.css */
+
 /* @import "tailwindcss"; */
 
 .pageButton {
@@ -53,11 +55,40 @@
 .card {
   padding: 2em;
   border-radius: 8px;
-  background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-6));
+  background-color: light-dark(
+    var(--mantine-color-gray-1),
+    var(--mantine-color-dark-6)
+  );
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  
 }
 
 .read-the-docs {
   color: #888;
+}
+
+.dropzone {
+  width: 400px;
+  height: 200px;
+  border-radius: 16px;
+  background-color: rgba(255, 255, 255, 0.061);
+  border: 2px dashed rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
+  cursor: pointer;
+  flex-direction: "column";
+}
+
+.dropzone:hover {
+  transform: scale(1.1);
+  background-color: rgba(255, 255, 255, 0.196);
+}
+
+.dropzone.drag-active {
+  transform: scale(1.1);
+  background-color: rgba(255, 255, 255, 0.15);
 }

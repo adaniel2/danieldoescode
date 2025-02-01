@@ -11,61 +11,60 @@ export const DropzoneFileHandler = (
 ) => {
   console.log("Accepted files:", acceptedFiles);
 
-  setFiles((prevFiles) => [...prevFiles, ...acceptedFiles]); // however, assuming single file, so...
+  setFiles((prevFiles) => [...prevFiles, ...acceptedFiles]);
   setLoading(true); // Start loading animation
 
-  // Simulate long file processing
-  // setTimeout(() => {
-
-  // }, 10000);
-
-  // Creating previews/processing files
   acceptedFiles.forEach((file) => {
     const reader = new FileReader();
-    const regex = /(.*)(\.xyz|\.pcd|\.geojson)$/;
+    const regex = /(.*)(\.xyz|\.pcd|\.geojson|\.json)$/;
     const match = file.path.match(regex);
     const fileType = match ? match[2] : null;
-
-    if (!fileType) {
-      console.error("Unsupported file type:", file.path);
-      alert(`Error: Unsupported file type: ${file.path}`);
-      return;
-    }
 
     reader.onload = (e) => {
       setLoading(false); // End loading once file is processed
       const data = e.target.result;
-      let points = null;
 
       try {
-        if (fileType === ".xyz") {
-          console.log("XYZ file detected!");
-          const xyzLoader = new XYZLoader();
-          const geometry = xyzLoader.parse(data);
+        let points = null;
 
-          // Wrap geometry in THREE.Points for consistency
-          points = new THREE.Points(
-            geometry,
-            new THREE.PointsMaterial({
-              size: 0.005,
-              color: 0xffffff,
-              sizeAttenuation: true,
-              vertexColors: true,
-            })
-          );
+        switch (fileType) {
+          case ".xyz":
+            console.log("XYZ file detected!");
+            const xyzLoader = new XYZLoader();
+            const xyzGeometry = xyzLoader.parse(data);
 
-          
-          processFileCallback(fileType, points);
-        } else if (fileType === ".pcd") {
-          console.log("PCD file detected!");
-          const pcdLoader = new PCDLoader();
+            points = new THREE.Points(
+              xyzGeometry,
+              new THREE.PointsMaterial({
+                size: 0.005,
+                color: 0xffffff,
+                sizeAttenuation: true,
+                vertexColors: true,
+              })
+            );
+            processFileCallback(fileType, points);
+            break;
 
-          points = pcdLoader.parse(data); // PCDLoader returns a THREE.Points
-          processFileCallback(fileType, points);
-        } else if (fileType === ".geojson") {
-          console.log("GeoJSON file detected!");
-          const json = JSON.parse(data);
-          processFileCallback(fileType, json);
+          case ".pcd":
+            console.log("PCD file detected!");
+            const pcdLoader = new PCDLoader();
+            // PCDLoader returns a THREE.Points
+            points = pcdLoader.parse(data);
+            processFileCallback(fileType, points);
+            break;
+
+          case ".geojson":
+          case ".json":
+            console.log("GeoJSON file detected!");
+            const json = JSON.parse(data);
+            processFileCallback(fileType, json);
+            break;
+
+          default:
+            // Covers null, undefined, or any other non-supported extension
+            console.error("Unsupported file type:", file.path);
+            alert(`Error: Unsupported file type: ${file.path}`);
+            return;
         }
       } catch (error) {
         console.error(`Error processing ${fileType} file:`, error);
@@ -85,7 +84,7 @@ export const DropzoneFileHandler = (
       if (fileType === ".pcd") {
         reader.readAsArrayBuffer(file); // PCDLoader needs a binary buffer
       } else {
-        reader.readAsText(file); // XYZ & GeoJSON are text-based
+        reader.readAsText(file); // XYZ & GeoJSON & JSON are text-based
       }
     } catch (error) {
       console.error("Error reading file:", error);
