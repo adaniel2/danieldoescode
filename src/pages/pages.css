@@ -54,11 +54,11 @@
   color: rgb(77, 77, 77);
 }
 .logo.pcv:hover {
-  color: rgb(45, 251, 255);
+  color: rgb(255, 150, 45);
   transform: scale(1.1);
 }
 .logo.gis:hover {
-  color: rgb(45, 251, 255);
+  color: rgb(255, 150, 45);
   transform: scale(1.1);
 }
 

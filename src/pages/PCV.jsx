@@ -13,7 +13,7 @@ import ConfirmationDialog from "../components/ConfirmationDialog";
 
 import "./pages.css";
 
-function PCV( { setViewerActive, setConfirmed }) {
+function PCV( { setViewerActive, setConfirmed, isHeaderVisible }) {
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
   const [points, setPoints] = useState(null);
@@ -64,6 +64,7 @@ function PCV( { setViewerActive, setConfirmed }) {
     setPoints(null); // clear points
     setConfirmation(false);
     setConfirmed(false); // Reset confirmation in App.jsx
+    setViewerActive(false); // Reset viewer active in App.jsx
     setSummary(null);
   };
 
@@ -71,7 +72,7 @@ function PCV( { setViewerActive, setConfirmed }) {
     <>
       {!points && <DZ onDrop={handleDrop} loading={loading} />}
       {summary && <ConfirmationDialog summary={summary} sendConfirm={handleConfirm} />}
-      {<PointCloudViewer points={points} onClose={handleClear} confirmation={confirmed}/>}
+      {<PointCloudViewer points={points} onClose={handleClear} confirmation={confirmed} isHeaderVisible={isHeaderVisible} />}
     </>
   );
 }

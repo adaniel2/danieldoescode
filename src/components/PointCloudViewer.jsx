@@ -6,7 +6,12 @@ import classes from "./PointCloudViewer.module.css";
 import { DarkModeSwitch } from "react-toggle-dark-mode";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 
-export default function PointCloudViewer({ points, onClose, confirmation }) {
+export default function PointCloudViewer({
+  points,
+  onClose,
+  confirmation,
+  isHeaderVisible,
+}) {
   // If no geometry, don’t show anything (onClose runs handleClear in parent)
   if (!points) return null;
   if (!confirmation) return null;
@@ -23,10 +28,17 @@ export default function PointCloudViewer({ points, onClose, confirmation }) {
 
   return (
     <div className={classes.overlay}>
-      <div className={classes.buttonContainer}>
+      <div
+        className={classes.buttonContainer}
+        style={{
+          top: isHeaderVisible ? "112px" : "56px",
+        }}
+      >
         <IoIosCloseCircleOutline
           onClick={onClose}
-          className={`${classes.closeButton} ${isDarkMode ? classes.darkCloseButton : ""}`}
+          className={`${classes.closeButton} ${
+            isDarkMode ? classes.darkCloseButton : ""
+          }`}
         />
         <DarkModeSwitch
           checked={isDarkMode}
@@ -35,7 +47,7 @@ export default function PointCloudViewer({ points, onClose, confirmation }) {
           className={classes.darkModeToggle}
         />
       </div>
-  
+
       <div className={classes.canvasContainer}>
         <Canvas>
           <color
@@ -57,5 +69,4 @@ export default function PointCloudViewer({ points, onClose, confirmation }) {
       </div>
     </div>
   );
-
 }
