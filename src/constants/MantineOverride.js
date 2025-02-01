@@ -1,6 +1,6 @@
 import { createTheme } from "@mantine/core";
 
-export const actionIcon = createTheme({
+export const actionIconTheme = createTheme({
   components: {
     ActionIcon: {
       styles: {

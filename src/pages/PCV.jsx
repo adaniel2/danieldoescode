@@ -13,15 +13,21 @@ import ConfirmationDialog from "../components/ConfirmationDialog";
 
 import "./pages.css";
 
-function PCV() {
+function PCV( { setViewerActive, setConfirmed }) {
   const [files, setFiles] = useState([]);
-  // Suppress ESLint warning for files variable
-  useEffect(() => {}, [files]); // empty useffect; runs when files changes, but does nothing
-
   const [loading, setLoading] = useState(false);
   const [points, setPoints] = useState(null);
   const [summary, setSummary] = useState(null);
   const [confirmed, setConfirmation] = useState(false);
+
+  // Suppress ESLint warning for files variable
+  useEffect(() => {}, [files]); // empty useffect; runs when files changes, but does nothing
+
+  // Notify App when viewer is active
+  useEffect(() => {
+    setViewerActive(!!points && confirmed); // Update isViewerActive only if confirmed is true
+    return () => setViewerActive(false); // Cleanup on unmount
+  }, [points, confirmed, setViewerActive]);
 
   const processFileCallback = (fileType, data) => {
     console.log(`Processed ${fileType} Data:`, data);
@@ -50,12 +56,14 @@ function PCV() {
 
   const handleConfirm = () => {
     setConfirmation(true);
+    setConfirmed(true); // Pass confirmation status to App.jsx
   };
 
   const handleClear = () => {
     setFiles([]); // Clear all files
     setPoints(null); // clear points
     setConfirmation(false);
+    setConfirmed(false); // Reset confirmation in App.jsx
     setSummary(null);
   };
 
