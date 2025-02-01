@@ -2,6 +2,29 @@
 
 /* @import "tailwindcss"; */
 
+.logoContainer {
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  vertical-align: middle;
+  height: 100%;
+  flex-direction: row;
+  gap: 100px;
+}
+
+.logoContainerInner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.logoText {
+  margin: 5px;
+  font-size: 18px;
+  opacity: 0.5;
+  color:white;
+}
+
 .pageButton {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -25,32 +48,34 @@
 }
 
 .logo {
-  height: 10em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+  width: 100px;
+  height: 100px;
+  transition: 1000ms;
+  color: rgb(77, 77, 77);
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+.logo.pcv:hover {
+  color: rgb(45, 251, 255);
+  transform: scale(1.1);
 }
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.logo.gis:hover {
+  color: rgb(45, 251, 255);
+  transform: scale(1.1);
 }
 
-@keyframes logo-spin {
+/* @keyframes logo-spin {
   from {
     transform: rotate(0deg);
   }
   to {
-    transform: rotate(360deg);
+    transform: rotate(0deg);
   }
-}
+} */
 
-@media (prefers-reduced-motion: no-preference) {
+/* @media (prefers-reduced-motion: no-preference) {
   a:nth-of-type(2) .logo {
     animation: logo-spin infinite 20s linear;
   }
-}
+} */
 
 .card {
   padding: 2em;

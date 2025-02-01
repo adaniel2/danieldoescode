@@ -2,10 +2,13 @@
 .footer {
   border-top: 1px solid
     light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-5));
-    z-index: 1000;
+  z-index: 1000;
+  width: 100%;
+  position: relative;
 }
 
 .inner {
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;

@@ -3,6 +3,8 @@ import { PCDLoader } from "three/addons/loaders/PCDLoader.js";
 import { XYZLoader } from "three/addons/loaders/XYZLoader.js"; // Import XYZLoader
 import * as THREE from "three";
 
+import generatePointCloudSummary from '../utils/PointCloudSummaryGenerator';
+
 export const DropzoneFileHandler = (
   acceptedFiles,
   setFiles,
@@ -30,9 +32,11 @@ export const DropzoneFileHandler = (
         switch (fileType) {
           case ".xyz":
             console.log("XYZ file detected!");
+
             const xyzLoader = new XYZLoader();
             const xyzGeometry = xyzLoader.parse(data);
 
+            // Wrap the geometry in a THREE.Points for consistency
             points = new THREE.Points(
               xyzGeometry,
               new THREE.PointsMaterial({
@@ -42,21 +46,37 @@ export const DropzoneFileHandler = (
                 vertexColors: true,
               })
             );
+
+            // Create .xyz summary object
+            const xyzSummary = generatePointCloudSummary(points, file);
+            points.dialogSummary = xyzSummary;
+
+            console.log(points);
+
             processFileCallback(fileType, points);
             break;
 
           case ".pcd":
             console.log("PCD file detected!");
+
             const pcdLoader = new PCDLoader();
-            // PCDLoader returns a THREE.Points
+
+            // PCDLoader returns a THREE.Points already
             points = pcdLoader.parse(data);
+
+            // Create .pcd summary object
+            const pcdSummary = generatePointCloudSummary(points, file);
+            points.dialogSummary = pcdSummary;
+  
             processFileCallback(fileType, points);
             break;
 
           case ".geojson":
           case ".json":
             console.log("GeoJSON file detected!");
+
             const json = JSON.parse(data);
+
             processFileCallback(fileType, json);
             break;
 

@@ -1,9 +1,5 @@
 // Footer.jsx
-import {
-  IconBrandInstagram,
-  IconBrandTwitter,
-  IconBrandYoutube,
-} from "@tabler/icons-react";
+import { IconBrandLinkedin, IconBrandGithub } from "@tabler/icons-react";
 import { ActionIcon, Container, Group } from "@mantine/core";
 import classes from "./Footer.module.css";
 import VoyisLogo from "../assets/voyis_logo.png";
@@ -23,14 +19,23 @@ export function Footer() {
           justify="flex-end"
           wrap="nowrap"
         >
-          <ActionIcon size="lg" color="gray" variant="subtle">
-            <IconBrandTwitter size={18} stroke={1.5} />
+          <ActionIcon
+            size="lg"
+            color="gray"
+            variant="subtle"
+            component="a"
+            href="https://www.linkedin.com/in/dan13l/"
+            target="_blank"
+          >
+            <IconBrandLinkedin size={24} stroke={1.5} />
           </ActionIcon>
-          <ActionIcon size="lg" color="gray" variant="subtle">
-            <IconBrandYoutube size={18} stroke={1.5} />
-          </ActionIcon>
-          <ActionIcon size="lg" color="gray" variant="subtle">
-            <IconBrandInstagram size={18} stroke={1.5} />
+          <ActionIcon size="lg"
+            color="gray"
+            variant="subtle"
+            component="a"
+            href="https://github.com/adaniel2"
+            target="_blank">
+              <IconBrandGithub size={24} stroke={1.5} />
           </ActionIcon>
         </Group>
       </Container>

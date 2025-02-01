@@ -1,36 +1,31 @@
 // Home.jsx
-import { useState } from 'react'
-import reactLogo from '../assets/react.svg'
-import viteLogo from '/vite.svg'
-import './pages.css'
+import { useState } from "react";
+import { IoEarthOutline } from "react-icons/io5";
+import { LuRotate3D } from "react-icons/lu";
+import "./pages.css";
+import { Link } from "react-router-dom";
 
 function Home() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_self">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <div className="logoContainer">
+        <div className="logoContainerInner">
+          <Link to="/gis">
+            <IoEarthOutline className="logo gis" />
+          </Link>
+          <h1 className="logoText">GeoJSON</h1>
+        </div>
+        <div className="logoContainerInner">
+          <Link to='/3d-pcv'>
+          <LuRotate3D className="logo pcv" />
+          </Link>
+          <h1 className="logoText">Point Cloud</h1>
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button className="pageButton" onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          3D Point Cloud + GIS Visualizer
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
-  )
+  );
 }
 
 export default Home;

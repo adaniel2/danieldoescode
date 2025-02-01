@@ -6,6 +6,7 @@ import Footer from "./components/Footer";
 import "@mantine/core/styles.css";
 import "@mantine/dropzone/styles.css";
 import "./index.css";
+import { actionIcon } from "./constants/MantineOverride.js";
 
 function App({ children }) {
   return (
@@ -13,6 +14,7 @@ function App({ children }) {
       withGlobalStyles
       withNormalizeCSS
       defaultColorScheme="auto"
+      // theme={actionIcon}
     >
       <Header />
       <div
@@ -23,7 +25,7 @@ function App({ children }) {
           flexDirection: "column",
         }}
       >
-        <main style={{ flex: 1, overflow: "hidden" }}>{children}</main>
+        <main style={{ flex: 1 }}>{children}</main>
 
         <Footer />
       </div>

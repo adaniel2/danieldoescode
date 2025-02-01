@@ -6,13 +6,10 @@ import classes from "./PointCloudViewer.module.css";
 import { DarkModeSwitch } from "react-toggle-dark-mode";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 
-export default function PointCloudViewer({ points, onClose }) {
+export default function PointCloudViewer({ points, onClose, confirmation }) {
   // If no geometry, don’t show anything (onClose runs handleClear in parent)
   if (!points) return null;
-
-  points.geometry.computeBoundingBox();
-  points.geometry.computeBoundingSphere();
-  console.log(points.geometry.boundingBox, points.geometry.boundingSphere);
+  if (!confirmation) return null;
 
   const [isDarkMode, setDarkMode] = useState(false);
 

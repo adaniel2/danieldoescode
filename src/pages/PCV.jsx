@@ -7,20 +7,32 @@ import * as THREE from "three";
 
 import { DropzoneFileHandler } from "../utils/DropzoneFileHandler";
 import PointCloudViewerLegacy from "../components/legacy/PointCloudViewer";
-import PointCloudViewer from "../components/PointCloudViewer"
+import PointCloudViewer from "../components/PointCloudViewer";
 import DZ from "../components/Dropzone";
+import ConfirmationDialog from "../components/ConfirmationDialog";
 
 import "./pages.css";
 
 function PCV() {
   const [files, setFiles] = useState([]);
+  // Suppress ESLint warning for files variable
+  useEffect(() => {}, [files]); // empty useffect; runs when files changes, but does nothing
+
   const [loading, setLoading] = useState(false);
-  const [geometry, setGeometry] = useState(null);
   const [points, setPoints] = useState(null);
+  const [summary, setSummary] = useState(null);
+  const [confirmed, setConfirmation] = useState(false);
 
   const processFileCallback = (fileType, data) => {
     console.log(`Processed ${fileType} Data:`, data);
 
+    const summary = data.dialogSummary;
+
+    // Set the summary dialog information
+    if (summary) {
+      setSummary(summary);
+    }
+ 
     // Now data is a THREE.Points for XYZ or PCD
     if (data && data.isPoints) {
       setPoints(data);
@@ -36,19 +48,22 @@ function PCV() {
     );
   };
 
+  const handleConfirm = () => {
+    setConfirmation(true);
+  };
+
   const handleClear = () => {
     setFiles([]); // Clear all files
-    setGeometry(null); // clear geometry
     setPoints(null); // clear points
+    setConfirmation(false);
+    setSummary(null);
   };
 
   return (
     <>
-      {!points && !loading && <DZ onDrop={handleDrop} loading={loading} />}
-      {/* {files.length !== 0 && !loading && (
-        <Button onClick={handleClear}>Clear Files</Button>
-      )} */}
-      <PointCloudViewer points={points} onClose={handleClear} />
+      {!points && <DZ onDrop={handleDrop} loading={loading} />}
+      {summary && <ConfirmationDialog summary={summary} sendConfirm={handleConfirm} />}
+      {<PointCloudViewer points={points} onClose={handleClear} confirmation={confirmed}/>}
     </>
   );
 }

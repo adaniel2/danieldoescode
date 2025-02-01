@@ -66,6 +66,7 @@ export function DZ(props) {
         justifyContent: "center",
         alignItems: "center",
         overflow: "hidden",
+        zIndex: 0
       }}
     >
       <div

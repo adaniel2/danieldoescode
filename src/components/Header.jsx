@@ -1,5 +1,5 @@
 // Header.jsx
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -16,6 +16,7 @@ import VoyisLogo from "../assets/voyis_logo.png";
 import classes from "./Header.module.css";
 import "@mantinex/mantine-logo/styles.css";
 
+
 const links = [
   { link: "/gis", label: "GIS" },
   { link: "/3d-pcv", label: "3D Viewer" },
@@ -26,6 +27,10 @@ export function Header() {
   // const [active, setActive] = useState();
   const location = useLocation();
   const [active, setActive] = useState(location.pathname);
+
+  useEffect(() => { // listening for route changes that weren't via setActive
+    setActive(location.pathname);
+  }, [location.pathname]);
 
   const items = links.map((link) => (
     <Link
