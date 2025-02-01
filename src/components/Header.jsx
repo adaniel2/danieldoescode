@@ -22,7 +22,7 @@ const links = [
   { link: "/3d-pcv", label: "3D Viewer" },
 ];
 
-export function Header() {
+export function Header( { isHeaderVisible }) {
   const [opened, { toggle }] = useDisclosure(false);
   // const [active, setActive] = useState();
   const location = useLocation();
@@ -46,7 +46,7 @@ export function Header() {
 
   // add to="/" Link tag to switch without reload
   return (
-    <header className={classes.header}>
+    <header className={`${classes.header} ${!isHeaderVisible ? classes.hidden : ""}`}>
       <Container size="lg" className={classes.inner}>
         {/* <VoyisLogo size={28} /> */}
         <Link to="/" onClick={() => setActive("/")}>

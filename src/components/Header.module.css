@@ -13,6 +13,13 @@
   width: 100%;
   z-index: 9999;
   background-color: var(--mantine-color-body);
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+.header.hidden {
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
 }
 
 .inner {

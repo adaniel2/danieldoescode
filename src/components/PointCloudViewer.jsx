@@ -6,15 +6,20 @@ import classes from "./PointCloudViewer.module.css";
 import { DarkModeSwitch } from "react-toggle-dark-mode";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 
+import { PiArrowCircleDown } from "react-icons/pi";
+import { PiArrowCircleUp } from "react-icons/pi";
+import { ActionIcon } from "@mantine/core";
+import ToggleHeaderButton from "./ToggleHeaderButton";
+
 export default function PointCloudViewer({
   points,
   onClose,
   confirmation,
   isHeaderVisible,
+  setHeaderVisible,
 }) {
   // If no geometry, don’t show anything (onClose runs handleClear in parent)
-  if (!points) return null;
-  if (!confirmation) return null;
+  if (!points || !confirmation) return null;
 
   const [isDarkMode, setDarkMode] = useState(false);
 
@@ -28,10 +33,12 @@ export default function PointCloudViewer({
 
   return (
     <div className={classes.overlay}>
+      <ToggleHeaderButton isHeaderVisible={isHeaderVisible} setHeaderVisible={setHeaderVisible} />
       <div
         className={classes.buttonContainer}
         style={{
           top: isHeaderVisible ? "112px" : "56px",
+          transition: "top 0.3s ease-in-out", // Smooth movement
         }}
       >
         <IoIosCloseCircleOutline

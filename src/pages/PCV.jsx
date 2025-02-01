@@ -13,7 +13,12 @@ import ConfirmationDialog from "../components/ConfirmationDialog";
 
 import "./pages.css";
 
-function PCV( { setViewerActive, setConfirmed, isHeaderVisible }) {
+function PCV({
+  // setViewerActive,
+  // setConfirmed,
+  setHeaderVisible,
+  isHeaderVisible,
+}) {
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
   const [points, setPoints] = useState(null);
@@ -24,10 +29,10 @@ function PCV( { setViewerActive, setConfirmed, isHeaderVisible }) {
   useEffect(() => {}, [files]); // empty useffect; runs when files changes, but does nothing
 
   // Notify App when viewer is active
-  useEffect(() => {
-    setViewerActive(!!points && confirmed); // Update isViewerActive only if confirmed is true
-    return () => setViewerActive(false); // Cleanup on unmount
-  }, [points, confirmed, setViewerActive]);
+  // useEffect(() => {
+  //   setViewerActive(!!points && confirmed); // Update isViewerActive only if confirmed is true
+  //   return () => setViewerActive(false); // Cleanup on unmount
+  // }, [points, confirmed, setViewerActive]);
 
   const processFileCallback = (fileType, data) => {
     console.log(`Processed ${fileType} Data:`, data);
@@ -38,7 +43,7 @@ function PCV( { setViewerActive, setConfirmed, isHeaderVisible }) {
     if (summary) {
       setSummary(summary);
     }
- 
+
     // Now data is a THREE.Points for XYZ or PCD
     if (data && data.isPoints) {
       setPoints(data);
@@ -56,23 +61,34 @@ function PCV( { setViewerActive, setConfirmed, isHeaderVisible }) {
 
   const handleConfirm = () => {
     setConfirmation(true);
-    setConfirmed(true); // Pass confirmation status to App.jsx
+    // setConfirmed(true); // Pass confirmation status to App.jsx
   };
 
   const handleClear = () => {
     setFiles([]); // Clear all files
     setPoints(null); // clear points
     setConfirmation(false);
-    setConfirmed(false); // Reset confirmation in App.jsx
-    setViewerActive(false); // Reset viewer active in App.jsx
+    // setConfirmed(false); // Reset confirmation in App.jsx
+    // setViewerActive(false); // Reset viewer active in App.jsx
+    setHeaderVisible(true); // Restore the header on viewer close
     setSummary(null);
   };
 
   return (
     <>
       {!points && <DZ onDrop={handleDrop} loading={loading} />}
-      {summary && <ConfirmationDialog summary={summary} sendConfirm={handleConfirm} />}
-      {<PointCloudViewer points={points} onClose={handleClear} confirmation={confirmed} isHeaderVisible={isHeaderVisible} />}
+      {summary && (
+        <ConfirmationDialog summary={summary} sendConfirm={handleConfirm} />
+      )}
+      {
+        <PointCloudViewer
+          points={points}
+          onClose={handleClear}
+          confirmation={confirmed}
+          isHeaderVisible={isHeaderVisible}
+          setHeaderVisible={setHeaderVisible}
+        />
+      }
     </>
   );
 }
