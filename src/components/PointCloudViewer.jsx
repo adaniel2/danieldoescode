@@ -37,7 +37,7 @@ export default function PointCloudViewer({
       <div
         className={classes.buttonContainer}
         style={{
-          top: isHeaderVisible ? "112px" : "56px",
+          top: isHeaderVisible ? "92px" : "36px",
           transition: "top 0.3s ease-in-out", // Smooth movement
         }}
       >

@@ -2,8 +2,7 @@
 /* Wrapper for Positioning */
 .buttonContainer {
   position: absolute;
-  top: 50px;
-  right: 50px;
+  right: 30px;
   display: flex;
   align-items: center;
   flex-direction: column; /* Stack items vertically */

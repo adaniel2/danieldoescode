@@ -1,0 +1,118 @@
+/* ConfirmationDialog.module.css */
+
+/* Keyframes for dialog's entrance/exit animation */
+@keyframes fadeInAnimation {
+  from {
+    opacity: 0.5;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeOutAnimation {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0);
+  }
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+
+  /* The actual blur (include -webkit- for Safari support) */
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 12000;
+}
+
+.dialogContainer {
+  position: relative; /* Ensures proper stacking context */
+  margin: auto; /* Additional centering safeguard */
+}
+
+.dialogContainer.fadeIn {
+  animation: fadeInAnimation 0.15s ease-out forwards;
+}
+
+.dialogContainer.fadeOut {
+  animation: fadeOutAnimation 0.15s ease-in forwards;
+}
+
+.dialog {
+  background-color: #f5d1a6;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  width: 400px;
+  height: 450px;
+  max-width: 90%;
+  text-align: center;
+
+  /* Vertical stacking inside the dialog */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.buttonGroup {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding-bottom: 20px;
+}
+
+.dialogButton {
+  min-width: 80px;
+  transition: 300ms;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.79);
+  background-color: rgba(0, 0, 0, 0.349);
+  border: none;
+}
+
+.dialogButton:hover {
+  transform: scale(1.05);
+}
+
+.card {
+  border-radius: 6px;
+  background-color: rgba(255, 194, 28, 0.83);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.556);
+  margin: 1px;
+  max-width: 250px;
+  max-height: 80px;
+  transition: 200ms;
+  min-width: 250px;
+  color: black;
+}
+
+.card:hover {
+  transform: scale(1.1);
+}
+
+.dialogCardGroup {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+  padding-bottom: 20px;
+}
+
+h2 {
+  margin: 10px;
+  color: rgb(0, 0, 0);
+}
