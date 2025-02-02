@@ -37,7 +37,7 @@ export default function PointCloudViewer({
   }, [setViewerActive]);
 
   return (
-    <div className={`${classes.overlay} viewer-logger`} data-viewer-type="point-cloud">
+    <div className={classes.overlay} data-viewer-type="point-cloud">
       <ToggleHeaderButton isHeaderVisible={isHeaderVisible} setHeaderVisible={setHeaderVisible} />
       <div
         className={classes.buttonContainer}

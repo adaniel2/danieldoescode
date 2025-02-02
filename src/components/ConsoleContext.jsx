@@ -1,3 +1,4 @@
+// ConsoleContext.jsx
 import React, { createContext, useContext, useState, useEffect } from "react";
 
 const ConsoleContext = createContext();
@@ -28,12 +29,24 @@ export const ConsoleProvider = ({ children }) => {
       if (now - lastClickTime < 200) return;
       lastClickTime = now;
 
-      const viewerElement = event.target.closest(".viewer-logger");
+      // Ensure only clicks inside viewers (Point Cloud / GIS) are logged
+      const viewerElement = event.target.closest("[data-viewer-type]");
       if (!viewerElement) return; // Ignore clicks outside viewer
 
       let elementName = event.target.tagName.toLowerCase();
       let elementClass = event.target.className || "no-class";
       logMessage(`User clicked: <${elementName}>.${elementClass}`, "info");
+    };
+
+    // Capture JavaScript runtime errors
+    const handleError = (message, source, lineno, colno, error) => {
+      logMessage(`⚠️ JS Error: ${message} at ${source}:${lineno}:${colno}`, "error");
+      return false; // Prevent default error logging in DevTools
+    };
+
+    // Capture uncaught Promise rejections
+    const handleUnhandledRejection = (event) => {
+      logMessage(`⚠️ Unhandled Promise Rejection: ${event.reason}`, "error");
     };
 
     // Capture Zooming (Wheel Scroll)
@@ -67,6 +80,12 @@ export const ConsoleProvider = ({ children }) => {
 
     // Add Event Listeners
     document.addEventListener("click", handleClick);
+    window.onerror = handleError;
+    window.addEventListener("error", (event) =>
+      handleError(event.message, event.filename, event.lineno, event.colno, event.error)
+    );
+    window.addEventListener("unhandledrejection", handleUnhandledRejection);
+
     // document.addEventListener("wheel", handleZoom, { passive: true });
     // document.addEventListener("mousemove", handlePan);
     // document.addEventListener("gesturestart", handleGesture);
@@ -76,6 +95,9 @@ export const ConsoleProvider = ({ children }) => {
     return () => {
       // Remove Listeners on Unmount
       document.removeEventListener("click", handleClick);
+      window.removeEventListener("error", handleError);
+      window.removeEventListener("unhandledrejection", handleUnhandledRejection);
+
       // document.removeEventListener("wheel", handleZoom);
       // document.removeEventListener("mousemove", handlePan);
       // document.removeEventListener("gesturestart", handleGesture);
