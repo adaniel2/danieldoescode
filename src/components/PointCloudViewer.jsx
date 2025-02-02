@@ -21,7 +21,6 @@ export default function PointCloudViewer({
   const [isDarkMode, setDarkMode] = useState(false);
 
   const toggleDarkMode = (checked) => {
-    s
     setDarkMode(checked);
   };
 

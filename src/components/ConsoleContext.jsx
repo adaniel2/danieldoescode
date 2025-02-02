@@ -29,7 +29,7 @@ export const ConsoleProvider = ({ children }) => {
       if (now - lastClickTime < 200) return;
       lastClickTime = now;
 
-      // Ensure only clicks inside viewers (Point Cloud / GIS) are logged
+      // Ensure only clicks inside viewers are logged
       const viewerElement = event.target.closest("[data-viewer-type]");
       if (!viewerElement) return; // Ignore clicks outside viewer
 
@@ -39,9 +39,9 @@ export const ConsoleProvider = ({ children }) => {
     };
 
     // Capture JavaScript runtime errors
-    const handleError = (message, source, lineno, colno, error) => {
-      logMessage(`⚠️ JS Error: ${message} at ${source}:${lineno}:${colno}`, "error");
-      return false; // Prevent default error logging in DevTools
+    const handleError = (event) => {
+      const message = `⚠️ JS Error: ${event.message} at ${event.filename}:${event.lineno}:${event.colno}`;
+      logMessage(message, "error");
     };
 
     // Capture uncaught Promise rejections
@@ -80,10 +80,7 @@ export const ConsoleProvider = ({ children }) => {
 
     // Add Event Listeners
     document.addEventListener("click", handleClick);
-    window.onerror = handleError;
-    window.addEventListener("error", (event) =>
-      handleError(event.message, event.filename, event.lineno, event.colno, event.error)
-    );
+    window.addEventListener("error", handleError);
     window.addEventListener("unhandledrejection", handleUnhandledRejection);
 
     // document.addEventListener("wheel", handleZoom, { passive: true });
