@@ -7,7 +7,10 @@ import ConfirmationDialog from "../components/ConfirmationDialog";
 
 import "./pages.css";
 
+import { useConsole } from "../components/ConsoleContext";
+
 function PCV({ setHeaderVisible, isHeaderVisible }) {
+  const { logMessage } = useConsole();
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
   const [points, setPoints] = useState(null);
@@ -16,6 +19,7 @@ function PCV({ setHeaderVisible, isHeaderVisible }) {
 
   const processFileCallback = (fileType, data) => {
     console.log(`Processed ${fileType} Data:`, data);
+    logMessage(`Uploaded file: ${data.dialogSummary.fileName} (${fileType})`);
 
     const dialogSummary = data.dialogSummary;
 
@@ -40,6 +44,8 @@ function PCV({ setHeaderVisible, isHeaderVisible }) {
   };
 
   const handleConfirm = () => {
+    logMessage(`Files confirmed.`);
+    logMessage(`Point Cloud Visualizer has opened.`);
     setSummary(null); // clear the summary dialog
     setConfirmation(true);
 
@@ -47,6 +53,7 @@ function PCV({ setHeaderVisible, isHeaderVisible }) {
   };
 
   const handleClear = () => {
+    logMessage(`Viewer closed.`);
     setFiles([]); // Clear all files
     setPoints(null); // clear points
     setConfirmation(false);

@@ -5,10 +5,6 @@ import { OrbitControls, Bounds, Center } from "@react-three/drei";
 import classes from "./PointCloudViewer.module.css";
 import { DarkModeSwitch } from "react-toggle-dark-mode";
 import { IoIosCloseCircleOutline } from "react-icons/io";
-
-import { PiArrowCircleDown } from "react-icons/pi";
-import { PiArrowCircleUp } from "react-icons/pi";
-import { ActionIcon } from "@mantine/core";
 import ToggleHeaderButton from "./ToggleHeaderButton";
 
 export default function PointCloudViewer({

@@ -57,10 +57,10 @@ export default function ConfirmationDialog({ summary, onConfirm, onCancel }) {
           <h2>Does this look right?</h2>
           <div className={classes.dialogCardGroup}>{summaryItems}</div>
           <div className={classes.buttonGroup}>
-            <button className={classes.dialogButton} onClick={handleConfirmClick}>
+            <button className={`${classes.dialogButton} ${classes.dialogConfirmButton}`} onClick={handleConfirmClick}>
               Confirm
             </button>
-            <button className={classes.dialogButton} onClick={handleCancelClick}>
+            <button className={`${classes.dialogButton} ${classes.dialogCancelButton}`} onClick={handleCancelClick}>
               Cancel
             </button>
           </div>
