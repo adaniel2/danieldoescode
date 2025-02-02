@@ -8,9 +8,10 @@ import {
   useLocation,
 } from "react-router-dom";
 
-import { Burger, Container, Group } from "@mantine/core";
+import { Burger, Container, Group, ActionIcon } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-// import { MantineLogo } from '@mantinex/mantine-logo';
+
+import SettingsBurger from './SettingsBurger';
 import VoyisLogo from "../assets/voyis_logo.png";
 
 import classes from "./Header.module.css";
@@ -22,9 +23,8 @@ const links = [
   { link: "/3d-pcv", label: "3D Viewer" },
 ];
 
-export function Header( { isHeaderVisible }) {
+export function Header( { isHeaderVisible, setConsoleVisible }) {
   const [opened, { toggle }] = useDisclosure(false);
-  // const [active, setActive] = useState();
   const location = useLocation();
   const [active, setActive] = useState(location.pathname);
 
@@ -63,7 +63,9 @@ export function Header( { isHeaderVisible }) {
           {items}
         </Group>
 
-        <Burger opened={opened} onClick={toggle} hiddenFrom="xs" size="sm" />
+        <div className={classes.burgerContainer}>
+          <SettingsBurger setConsoleVisible={setConsoleVisible} opened={opened} onClick={toggle} size="sm" />
+        </div>
       </Container>
     </header>
   );

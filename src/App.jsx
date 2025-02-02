@@ -13,7 +13,7 @@ import { ConsoleProvider } from "./components/ConsoleContext";
 function App({ children }) {
   const [isHeaderVisible, setHeaderVisible] = useState(true);
   const [isViewerActive, setViewerActive] = useState(false);
-  // const [isConfirmed, setConfirmed] = useState(false);
+  const [isConsoleVisible, setConsoleVisible] = useState(false);
 
   return (
     <ConsoleProvider>
@@ -23,7 +23,7 @@ function App({ children }) {
         defaultColorScheme="auto"
         // theme={actionIcon}
       >
-        {<Header isHeaderVisible={isHeaderVisible}/>}
+        {<Header isHeaderVisible={isHeaderVisible} setConsoleVisible={setConsoleVisible}/>}
         <div
           style={{
             marginTop: isHeaderVisible ? 56 : 0,
@@ -35,14 +35,13 @@ function App({ children }) {
           <main style={{ flex: 1 }}>
             {React.cloneElement(children, {
               setViewerActive,
-              // setConfirmed,
               setHeaderVisible,
               isHeaderVisible,
             })}
           </main>
           <Footer />
         </div>
-        {isViewerActive && <LogConsole />}
+        {(isViewerActive && isConsoleVisible) && <LogConsole />}
       </MantineProvider>
     </ConsoleProvider>
   );
