@@ -67,6 +67,7 @@ export default function GISViewer({ map, onClose }) {
       style={{ height: "100%" }}
       ref={mapContainerRef}
       className="map-container"
+      data-viewer-type="gis"
     />
   );
 }

@@ -12,18 +12,18 @@ import { ConsoleProvider } from "./components/ConsoleContext";
 
 function App({ children }) {
   const [isHeaderVisible, setHeaderVisible] = useState(true);
-  // const [isViewerActive, setViewerActive] = useState(false);
+  const [isViewerActive, setViewerActive] = useState(false);
   // const [isConfirmed, setConfirmed] = useState(false);
 
   return (
-    // <ConsoleProvider>
+    <ConsoleProvider>
       <MantineProvider
         withGlobalStyles
         withNormalizeCSS
         defaultColorScheme="auto"
         // theme={actionIcon}
       >
-        {<Header isHeaderVisible={isHeaderVisible} />}
+        {<Header isHeaderVisible={isHeaderVisible}/>}
         <div
           style={{
             marginTop: isHeaderVisible ? 56 : 0,
@@ -34,7 +34,7 @@ function App({ children }) {
         >
           <main style={{ flex: 1 }}>
             {React.cloneElement(children, {
-              // setViewerActive,
+              setViewerActive,
               // setConfirmed,
               setHeaderVisible,
               isHeaderVisible,
@@ -42,9 +42,9 @@ function App({ children }) {
           </main>
           <Footer />
         </div>
-        {/* <LogConsole /> */}
+        {isViewerActive && <LogConsole />}
       </MantineProvider>
-    // </ConsoleProvider>
+    </ConsoleProvider>
   );
 }
 

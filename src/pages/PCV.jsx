@@ -9,7 +9,7 @@ import "./pages.css";
 
 import { useConsole } from "../components/ConsoleContext";
 
-function PCV({ setHeaderVisible, isHeaderVisible }) {
+function PCV({ setViewerActive, setHeaderVisible, isHeaderVisible }) {
   const { logMessage } = useConsole();
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -78,6 +78,7 @@ function PCV({ setHeaderVisible, isHeaderVisible }) {
           confirmation={confirmed}
           isHeaderVisible={isHeaderVisible}
           setHeaderVisible={setHeaderVisible}
+          setViewerActive={setViewerActive}
         />
       }
     </>

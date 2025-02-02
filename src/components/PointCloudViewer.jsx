@@ -13,6 +13,7 @@ export default function PointCloudViewer({
   confirmation,
   isHeaderVisible,
   setHeaderVisible,
+  setViewerActive,
 }) {
   // If no geometry, don’t show anything (onClose runs handleClear in parent)
   if (!points || !confirmation) return null;
@@ -20,6 +21,7 @@ export default function PointCloudViewer({
   const [isDarkMode, setDarkMode] = useState(false);
 
   const toggleDarkMode = (checked) => {
+    s
     setDarkMode(checked);
   };
 
@@ -27,8 +29,15 @@ export default function PointCloudViewer({
     return <primitive object={points} {...props} />;
   }
 
+  useEffect(() => { // set viewer not active on unmount
+    setViewerActive(true);
+    return () => {
+      setViewerActive(false);
+    };
+  }, [setViewerActive]);
+
   return (
-    <div className={classes.overlay}>
+    <div className={`${classes.overlay} viewer-logger`} data-viewer-type="point-cloud">
       <ToggleHeaderButton isHeaderVisible={isHeaderVisible} setHeaderVisible={setHeaderVisible} />
       <div
         className={classes.buttonContainer}
