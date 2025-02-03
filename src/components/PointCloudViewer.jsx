@@ -2,11 +2,13 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Bounds, Center } from "@react-three/drei";
+import * as THREE from "three";
 import classes from "./PointCloudViewer.module.css";
 import { DarkModeSwitch } from "react-toggle-dark-mode";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import ToggleHeaderButton from "./ToggleHeaderButton";
 import SideBar from "./SideBar";
+import { getZMappedColor } from "../utils/AltitudeColorMapper";
 
 export default function PointCloudViewer({
   points,
@@ -16,28 +18,52 @@ export default function PointCloudViewer({
   setHeaderVisible,
   setViewerActive,
   isSideBarVisible,
-  
 }) {
-  // If no geometry, don’t show anything (onClose runs handleClear in parent)
   if (!points || !confirmation) return null;
 
   const [isDarkMode, setDarkMode] = useState(false);
+  const [pointSize, setPointSize] = useState(0.0004);
 
   const toggleDarkMode = (checked) => {
     setDarkMode(checked);
   };
 
-  function Points(props) {
-    return <primitive object={points} {...props} />;
-  }
-
   useEffect(() => {
-    // set viewer not active on unmount
     setViewerActive(true);
     return () => {
       setViewerActive(false);
     };
   }, [setViewerActive]);
+
+  // Corrected Points Component with BufferGeometry
+  function Points({ points }) {
+    const geometryRef = useRef();
+
+    useEffect(() => {
+      if (!points) return;
+
+      // Extract positions & colors from util function
+      const { positions, colors } = getZMappedColor(points, "y"); // Map colors based on Y height
+
+      if (geometryRef.current) {
+        geometryRef.current.setAttribute(
+          "position",
+          new THREE.Float32BufferAttribute(positions, 3)
+        );
+        geometryRef.current.setAttribute(
+          "color",
+          new THREE.Float32BufferAttribute(colors, 3)
+        );
+      }
+    }, [points]);
+
+    return (
+      <points>
+        <bufferGeometry ref={geometryRef} />
+        <pointsMaterial size={pointSize} vertexColors />
+      </points>
+    );
+  }
 
   return (
     <div className={classes.overlay} data-viewer-type="point-cloud">
@@ -49,7 +75,7 @@ export default function PointCloudViewer({
         className={classes.buttonContainer}
         style={{
           top: isHeaderVisible ? "92px" : "36px",
-          transition: "top 0.3s ease-in-out", // Smooth movement
+          transition: "top 0.3s ease-in-out",
         }}
       >
         <IoIosCloseCircleOutline
@@ -66,23 +92,18 @@ export default function PointCloudViewer({
         />
       </div>
 
-      {isSideBarVisible && <SideBar isHeaderVisible={isHeaderVisible}/>}
+      {isSideBarVisible && (
+        <SideBar isHeaderVisible={isHeaderVisible} setPointSize={setPointSize} />
+      )}
 
       <div className={classes.canvasContainer}>
         <Canvas>
-          <color
-            attach="background"
-            args={isDarkMode ? ["#333"] : ["#ffffff"]}
-          />
+          <color attach="background" args={isDarkMode ? ["#333"] : ["#ffffff"]} />
           <ambientLight />
           <OrbitControls makeDefault />
           <Bounds fit clip observe>
             <Center>
-              <Points
-                rotation={[0, 0, 0]}
-                material-size={0.0005}
-                material-color="white"
-              />
+              <Points points={points} />
             </Center>
           </Bounds>
         </Canvas>

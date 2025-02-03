@@ -4,7 +4,8 @@ import SideBarSlider from "./SideBarSlider";
 import SideBarCheckbox from "./SideBarCheckbox";
 import SideBarNumberInput from "./SideBarNumberInput";
 
-export default function SideBar({ isHeaderVisible }) {
+export default function SideBar({ isHeaderVisible, setPointSize }) {
+
   return (
     <div
       className={classes.sidebarContainer}
@@ -18,7 +19,7 @@ export default function SideBar({ isHeaderVisible }) {
         <SideBarCheckbox />
         <SideBarCheckbox />
         <SideBarCheckbox />
-        <SideBarNumberInput />
+        <SideBarNumberInput setPointSize={setPointSize}/>
       </div>
     </div>
   );
