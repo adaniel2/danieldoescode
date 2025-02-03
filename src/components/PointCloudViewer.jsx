@@ -54,6 +54,10 @@ export default function PointCloudViewer({
           "color",
           new THREE.Float32BufferAttribute(colors, 3)
         );
+
+        // Recompute bounding information so that helpers (e.g., Bounds, Center) work correctly
+        geometryRef.current.computeBoundingBox();
+        geometryRef.current.computeBoundingSphere();
       }
     }, [points]);
 
@@ -93,12 +97,18 @@ export default function PointCloudViewer({
       </div>
 
       {isSideBarVisible && (
-        <SideBar isHeaderVisible={isHeaderVisible} setPointSize={setPointSize} />
+        <SideBar
+          isHeaderVisible={isHeaderVisible}
+          setPointSize={setPointSize}
+        />
       )}
 
       <div className={classes.canvasContainer}>
         <Canvas>
-          <color attach="background" args={isDarkMode ? ["#333"] : ["#ffffff"]} />
+          <color
+            attach="background"
+            args={isDarkMode ? ["#333"] : ["#ffffff"]}
+          />
           <ambientLight />
           <OrbitControls makeDefault />
           <Bounds fit clip observe>
