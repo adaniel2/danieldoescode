@@ -1,6 +1,6 @@
 // PointCloudViewer.jsx
 import React, { useRef, useEffect, useState, useContext } from "react";
-import { Canvas, useThree } from "@react-three/fiber";
+import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Bounds, Center } from "@react-three/drei";
 import * as THREE from "three";
 import classes from "./PointCloudViewer.module.css";
@@ -8,25 +8,12 @@ import { DarkModeSwitch } from "react-toggle-dark-mode";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import ToggleHeaderButton from "./ToggleHeaderButton";
 import SideBar from "./SideBar";
-import { PointCloudMappingContext, PointCloudMappingProvider } from "./PointCloudMappingContext";
+import {
+  PointCloudMappingContext,
+  PointCloudMappingProvider,
+} from "./PointCloudMappingContext";
 
-// Custom orbit controls to adjust camera position after fit
-function CustomOrbitControls({ zoomFactor = 0.8 }) {
-  const { camera } = useThree();
-
-  useEffect(() => {
-    camera.position.set(
-      camera.position.x * zoomFactor,
-      camera.position.y * zoomFactor,
-      camera.position.z * zoomFactor
-    );
-  }, [camera, zoomFactor]);
-
-  return <OrbitControls makeDefault />;
-}
-
-// Points component now uses the cached mapping from context.
-// It now accepts a "size" prop to control the point size.
+// Points component that uses the cached mapping from context and applies the given point size.
 function Points({ size }) {
   const geometryRef = useRef();
   const mapping = useContext(PointCloudMappingContext);
@@ -34,6 +21,7 @@ function Points({ size }) {
   useEffect(() => {
     if (!mapping) return;
     if (geometryRef.current) {
+      // Set positions and colors from the cached mapping.
       geometryRef.current.setAttribute(
         "position",
         new THREE.Float32BufferAttribute(mapping.positions, 3)
@@ -42,6 +30,7 @@ function Points({ size }) {
         "color",
         new THREE.Float32BufferAttribute(mapping.colors, 3)
       );
+      // Compute the bounding information.
       geometryRef.current.computeBoundingBox();
       geometryRef.current.computeBoundingSphere();
     }
@@ -109,10 +98,7 @@ export default function PointCloudViewer({
         </div>
 
         {isSideBarVisible && (
-          <SideBar
-            isHeaderVisible={isHeaderVisible}
-            setPointSize={setPointSize}
-          />
+          <SideBar isHeaderVisible={isHeaderVisible} setPointSize={setPointSize} />
         )}
 
         <div className={classes.canvasContainer}>
@@ -122,8 +108,8 @@ export default function PointCloudViewer({
               args={isDarkMode ? ["#333"] : ["#ffffff"]}
             />
             <ambientLight />
-            <CustomOrbitControls zoomFactor={0.8} />
-            <Bounds fit clip observe>
+            <OrbitControls makeDefault />
+            <Bounds fit clip>
               <Center>
                 <Points size={pointSize} />
               </Center>
