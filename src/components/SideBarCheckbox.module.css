@@ -1,0 +1,32 @@
+.root {
+  /* border: 1px solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4)); */
+  border: 1px solid rgb(160, 160, 160);
+  padding: var(--mantine-spacing-xs) var(--mantine-spacing-sm);
+  border-radius: var(--mantine-radius-md);
+  font-weight: 500;
+  transition:
+    transform 0.2s ease-in-out, /* Added transform transition */
+    color 100ms ease,
+    background-color 100ms ease,
+    border-color 100ms ease;
+  cursor: pointer;
+
+  &[data-checked] {
+    background-color: rgba(255, 255, 255, 0);
+    color: var(--mantine-color-white);
+  }
+
+  & * {
+    pointer-events: none;
+    user-select: none;
+  }
+
+  
+  &:hover {
+    transform: scale(1.05); /* Scale up on hover */
+  }
+
+  &:active {
+    transform: scale(0.7);
+  }
+}

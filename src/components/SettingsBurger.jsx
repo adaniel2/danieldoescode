@@ -17,7 +17,7 @@ export default function SettingsBruger({
   setConsoleVisible,
   setSideBarVisible,
 }) {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isConsoleOpen, setIsConsoleOpen] = useState(false);
 
   return (

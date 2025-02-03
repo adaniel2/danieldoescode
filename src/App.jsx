@@ -14,7 +14,7 @@ function App({ children }) {
   const [isHeaderVisible, setHeaderVisible] = useState(true);
   const [isViewerActive, setViewerActive] = useState(false);
   const [isConsoleVisible, setConsoleVisible] = useState(false);
-  const [isSideBarVisible, setSideBarVisible] = useState(false);
+  const [isSideBarVisible, setSideBarVisible] = useState(true);
 
   return (
     <ConsoleProvider>
@@ -41,7 +41,7 @@ function App({ children }) {
               isSideBarVisible
             })}
           </main>
-          <Footer />
+          { !isViewerActive && <Footer />}
         </div>
         {(isViewerActive && isConsoleVisible) && <LogConsole />}
       </MantineProvider>

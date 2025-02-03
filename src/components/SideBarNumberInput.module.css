@@ -1,0 +1,14 @@
+.numberInputField input {
+    border: 1px solid rgb(160, 160, 160);
+    border-radius: 6px;
+    background-color: #1a1a1a;
+    color: white;
+    padding: 5px;
+    transition: border-color 0.2s ease-in-out;
+}
+
+/* Change border color on focus */
+.numberInputField input:focus {
+    border-color: rgb(254, 186, 0);
+    outline: none;
+}
