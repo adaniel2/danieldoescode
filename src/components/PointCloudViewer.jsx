@@ -1,6 +1,6 @@
 // PointCloudViewer.jsx
 import React, { useRef, useEffect, useState } from "react";
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useThree } from "@react-three/fiber";
 import { OrbitControls, Bounds, Center } from "@react-three/drei";
 import * as THREE from "three";
 import classes from "./PointCloudViewer.module.css";
@@ -9,6 +9,22 @@ import { IoIosCloseCircleOutline } from "react-icons/io";
 import ToggleHeaderButton from "./ToggleHeaderButton";
 import SideBar from "./SideBar";
 import { getZMappedColor } from "../utils/AltitudeColorMapper";
+
+// Custom orbit controls to adjust camera position after fit
+function CustomOrbitControls({ zoomFactor = 0.8 }) {
+  const { camera } = useThree();
+
+  useEffect(() => {
+    // Adjust the camera's position relative to its current position.
+    camera.position.set(
+      camera.position.x * zoomFactor,
+      camera.position.y * zoomFactor,
+      camera.position.z * zoomFactor
+    );
+  }, [camera, zoomFactor]);
+
+  return <OrbitControls makeDefault />;
+}
 
 export default function PointCloudViewer({
   points,
@@ -110,7 +126,7 @@ export default function PointCloudViewer({
             args={isDarkMode ? ["#333"] : ["#ffffff"]}
           />
           <ambientLight />
-          <OrbitControls makeDefault />
+          <CustomOrbitControls zoomFactor={0.8} />
           <Bounds fit clip observe>
             <Center>
               <Points points={points} />
