@@ -16,6 +16,7 @@ import { RxHamburgerMenu } from "react-icons/rx";
 export default function SettingsBruger({
   setConsoleVisible,
   setSideBarVisible,
+  activeLocation,
 }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isConsoleOpen, setIsConsoleOpen] = useState(false);

@@ -1,0 +1,49 @@
+/* GISViewer.module.css*/
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 8999;
+  overflow: hidden; /*no scrollbars in this overlay*/
+  /* margin-top: 56px; */
+}
+
+.buttonContainer {
+  position: absolute;
+  right: 30px;
+  display: flex;
+  align-items: center;
+  flex-direction: column; /* Stack items vertically */
+  gap: 10px; /* Spacing between buttons */
+  z-index: 10000;
+}
+
+/* Close Button */
+.closeButton {
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.8
+  ); /* Light semi-transparent background */
+  cursor: pointer;
+  color: #535353;
+  opacity: 1;
+  transition: all 0.15s ease-in-out;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+}
+
+.closeButton:hover {
+  background-color: #d2d2d2;
+  opacity: 0.5;
+  transform: scale(1.1);
+}
+
+.closeButton:focus,
+.closeButton:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}

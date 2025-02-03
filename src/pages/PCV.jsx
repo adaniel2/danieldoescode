@@ -49,12 +49,10 @@ function PCV({ setViewerActive, setHeaderVisible, isHeaderVisible, isSideBarVisi
     logMessage(`Point Cloud Visualizer has opened.`);
     setSummary(null); // clear the summary dialog
     setConfirmation(true);
-
-    // setConfirmed(true); // Pass confirmation status to App.jsx
   };
 
   const handleClear = () => {
-    logMessage(`Viewer closed.`);
+    logMessage(`Point Cloud Visualizer closed.`);
     setFiles([]); // Clear all files
     setPoints(null); // clear points
     setConfirmation(false);

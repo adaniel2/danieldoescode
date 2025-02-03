@@ -77,6 +77,7 @@ export function Header({
               setSideBarVisible={setSideBarVisible}
               opened={opened}
               onClick={toggle}
+              activeLocation={active}
               size="sm"
             />
           </div>

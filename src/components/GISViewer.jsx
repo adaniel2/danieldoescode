@@ -1,10 +1,20 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
-import bbox from "@turf/bbox"; 
+import bbox from "@turf/bbox";
 import { GIS_LAYERS } from "../constants/GISLayers";
 import "mapbox-gl/dist/mapbox-gl.css";
+import classes from "./GISViewer.module.css";
+import ToggleHeaderButton from "./ToggleHeaderButton";
+import { IoIosCloseCircleOutline } from "react-icons/io";
 
-export default function GISViewer({ map, onClose }) {
+export default function GISViewer({
+  map,
+  onClose,
+  isHeaderVisible,
+  setHeaderVisible,
+  setViewerActive,
+  isSideBarVisible,
+}) {
   if (!map) return null;
 
   const mapContainerRef = useRef();
@@ -24,7 +34,8 @@ export default function GISViewer({ map, onClose }) {
 
     mapRef.current.on("load", () => {
       // Add GeoJSON Source
-      if (!mapRef.current.getSource("geojson-layer")) { // Prevent duplicate
+      if (!mapRef.current.getSource("geojson-layer")) {
+        // Prevent duplicate
         mapRef.current.addSource("geojson-layer", {
           type: "geojson",
           data: map,
@@ -49,25 +60,50 @@ export default function GISViewer({ map, onClose }) {
       };
 
       // Add layers dynamically
-      GIS_LAYERS.forEach(({ id, type, paint, filter }) => addLayer(id, type, paint, filter));
+      GIS_LAYERS.forEach(({ id, type, paint, filter }) =>
+        addLayer(id, type, paint, filter)
+      );
 
       // Add markers
-      const pointFeatures = map.features.filter((f) => f.geometry.type === "Point");
+      const pointFeatures = map.features.filter(
+        (f) => f.geometry.type === "Point"
+      );
 
       pointFeatures.forEach((feature) => {
         new mapboxgl.Marker()
           .setLngLat(feature.geometry.coordinates)
           .addTo(mapRef.current);
       });
+
+      // Set viewer as active
+      setViewerActive(true);
     });
   }, [map]);
 
   return (
-    <div
-      style={{ height: "100%" }}
-      ref={mapContainerRef}
-      className="map-container"
-      data-viewer-type="gis"
-    />
+    <div className={classes.overlay}>
+      <ToggleHeaderButton
+        isHeaderVisible={isHeaderVisible}
+        setHeaderVisible={setHeaderVisible}
+      />
+      <div
+        className={classes.buttonContainer}
+        style={{
+          top: isHeaderVisible ? "92px" : "36px",
+          transition: "top 0.3s ease-in-out",
+        }}
+      >
+        <IoIosCloseCircleOutline
+          onClick={onClose}
+          className={classes.closeButton}
+        />
+      </div>
+      <div
+        style={{ height: "100%" }}
+        ref={mapContainerRef}
+        className={classes.mapContainer}
+        data-viewer-type="gis"
+      />
+    </div>
   );
 }
