@@ -11,24 +11,29 @@ import {
 import { Burger, Container, Group, ActionIcon } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 
-import SettingsBurger from './SettingsBurger';
+import SettingsBurger from "./SettingsBurger";
 import VoyisLogo from "../assets/voyis_logo.png";
 
 import classes from "./Header.module.css";
 import "@mantinex/mantine-logo/styles.css";
-
 
 const links = [
   { link: "/gis", label: "GIS" },
   { link: "/3d-pcv", label: "3D Viewer" },
 ];
 
-export function Header( { isHeaderVisible, setConsoleVisible, setSideBarVisible, isViewerActive }) {
+export function Header({
+  isHeaderVisible,
+  setConsoleVisible,
+  setSideBarVisible,
+  isViewerActive,
+}) {
   const [opened, { toggle }] = useDisclosure(false);
   const location = useLocation();
   const [active, setActive] = useState(location.pathname);
 
-  useEffect(() => { // listening for route changes that weren't via setActive
+  useEffect(() => {
+    // listening for route changes that weren't via setActive
     setActive(location.pathname);
   }, [location.pathname]);
 
@@ -46,7 +51,9 @@ export function Header( { isHeaderVisible, setConsoleVisible, setSideBarVisible,
 
   // add to="/" Link tag to switch without reload
   return (
-    <header className={`${classes.header} ${!isHeaderVisible ? classes.hidden : ""}`}>
+    <header
+      className={`${classes.header} ${!isHeaderVisible ? classes.hidden : ""}`}
+    >
       <Container size="lg" className={classes.inner}>
         {/* <VoyisLogo size={28} /> */}
         <Link to="/" onClick={() => setActive("/")}>
@@ -63,9 +70,17 @@ export function Header( { isHeaderVisible, setConsoleVisible, setSideBarVisible,
           {items}
         </Group>
 
-        <div className={classes.burgerContainer}>
-          {isViewerActive && <SettingsBurger setConsoleVisible={setConsoleVisible} setSideBarVisible={setSideBarVisible} opened={opened} onClick={toggle} size="sm" />}
-        </div>
+        {isViewerActive && (
+          <div>
+            <SettingsBurger
+              setConsoleVisible={setConsoleVisible}
+              setSideBarVisible={setSideBarVisible}
+              opened={opened}
+              onClick={toggle}
+              size="sm"
+            />
+          </div>
+        )}
       </Container>
     </header>
   );

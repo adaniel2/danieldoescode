@@ -12,7 +12,6 @@ import {
 
 import { IoTerminalOutline } from "react-icons/io5";
 import { RxHamburgerMenu } from "react-icons/rx";
-import classes from "./SettingsBurger.module.css";
 
 export default function SettingsBruger({
   setConsoleVisible,
@@ -30,7 +29,6 @@ export default function SettingsBruger({
       </Menu.Target>
 
       <Menu.Dropdown
-        className={classes.burgerDropdown}
         style={{
           zIndex: 9999,
           transform: "translateY(10%)",
