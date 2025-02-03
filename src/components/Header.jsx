@@ -23,7 +23,7 @@ const links = [
   { link: "/3d-pcv", label: "3D Viewer" },
 ];
 
-export function Header( { isHeaderVisible, setConsoleVisible }) {
+export function Header( { isHeaderVisible, setConsoleVisible, setSideBarVisible, isViewerActive }) {
   const [opened, { toggle }] = useDisclosure(false);
   const location = useLocation();
   const [active, setActive] = useState(location.pathname);
@@ -64,7 +64,7 @@ export function Header( { isHeaderVisible, setConsoleVisible }) {
         </Group>
 
         <div className={classes.burgerContainer}>
-          <SettingsBurger setConsoleVisible={setConsoleVisible} opened={opened} onClick={toggle} size="sm" />
+          {isViewerActive && <SettingsBurger setConsoleVisible={setConsoleVisible} setSideBarVisible={setSideBarVisible} opened={opened} onClick={toggle} size="sm" />}
         </div>
       </Container>
     </header>

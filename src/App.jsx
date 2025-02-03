@@ -14,6 +14,7 @@ function App({ children }) {
   const [isHeaderVisible, setHeaderVisible] = useState(true);
   const [isViewerActive, setViewerActive] = useState(false);
   const [isConsoleVisible, setConsoleVisible] = useState(false);
+  const [isSideBarVisible, setSideBarVisible] = useState(false);
 
   return (
     <ConsoleProvider>
@@ -23,7 +24,7 @@ function App({ children }) {
         defaultColorScheme="auto"
         // theme={actionIcon}
       >
-        {<Header isHeaderVisible={isHeaderVisible} setConsoleVisible={setConsoleVisible}/>}
+        {<Header isHeaderVisible={isHeaderVisible} setConsoleVisible={setConsoleVisible} setSideBarVisible={setSideBarVisible} isViewerActive={isViewerActive}/>}
         <div
           style={{
             marginTop: isHeaderVisible ? 56 : 0,
@@ -37,6 +38,7 @@ function App({ children }) {
               setViewerActive,
               setHeaderVisible,
               isHeaderVisible,
+              isSideBarVisible
             })}
           </main>
           <Footer />

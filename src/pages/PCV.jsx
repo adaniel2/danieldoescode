@@ -9,13 +9,14 @@ import "./pages.css";
 
 import { useConsole } from "../components/ConsoleContext";
 
-function PCV({ setViewerActive, setHeaderVisible, isHeaderVisible }) {
+function PCV({ setViewerActive, setHeaderVisible, isHeaderVisible, isSideBarVisible }) {
   const { logMessage } = useConsole();
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
   const [points, setPoints] = useState(null);
   const [summary, setSummary] = useState(null);
   const [confirmed, setConfirmation] = useState(false);
+
 
   const processFileCallback = (fileType, data) => {
     console.log(`Processed ${fileType} Data:`, data);
@@ -59,6 +60,7 @@ function PCV({ setViewerActive, setHeaderVisible, isHeaderVisible }) {
     setConfirmation(false);
     setHeaderVisible(true); // Restore the header on viewer close
     setSummary(null);
+    setViewerActive(false);
   };
 
   return (
@@ -79,6 +81,7 @@ function PCV({ setViewerActive, setHeaderVisible, isHeaderVisible }) {
           isHeaderVisible={isHeaderVisible}
           setHeaderVisible={setHeaderVisible}
           setViewerActive={setViewerActive}
+          isSideBarVisible={isSideBarVisible}
         />
       }
     </>

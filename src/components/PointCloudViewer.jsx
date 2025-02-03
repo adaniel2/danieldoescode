@@ -6,6 +6,7 @@ import classes from "./PointCloudViewer.module.css";
 import { DarkModeSwitch } from "react-toggle-dark-mode";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import ToggleHeaderButton from "./ToggleHeaderButton";
+import SideBar from "./SideBar";
 
 export default function PointCloudViewer({
   points,
@@ -14,6 +15,8 @@ export default function PointCloudViewer({
   isHeaderVisible,
   setHeaderVisible,
   setViewerActive,
+  isSideBarVisible,
+  
 }) {
   // If no geometry, don’t show anything (onClose runs handleClear in parent)
   if (!points || !confirmation) return null;
@@ -28,7 +31,8 @@ export default function PointCloudViewer({
     return <primitive object={points} {...props} />;
   }
 
-  useEffect(() => { // set viewer not active on unmount
+  useEffect(() => {
+    // set viewer not active on unmount
     setViewerActive(true);
     return () => {
       setViewerActive(false);
@@ -37,7 +41,10 @@ export default function PointCloudViewer({
 
   return (
     <div className={classes.overlay} data-viewer-type="point-cloud">
-      <ToggleHeaderButton isHeaderVisible={isHeaderVisible} setHeaderVisible={setHeaderVisible} />
+      <ToggleHeaderButton
+        isHeaderVisible={isHeaderVisible}
+        setHeaderVisible={setHeaderVisible}
+      />
       <div
         className={classes.buttonContainer}
         style={{
@@ -58,6 +65,8 @@ export default function PointCloudViewer({
           className={classes.darkModeToggle}
         />
       </div>
+
+      {isSideBarVisible && <SideBar isHeaderVisible={isHeaderVisible}/>}
 
       <div className={classes.canvasContainer}>
         <Canvas>
