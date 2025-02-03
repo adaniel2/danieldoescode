@@ -26,7 +26,8 @@ function CustomOrbitControls({ zoomFactor = 0.8 }) {
 }
 
 // Points component now uses the cached mapping from context.
-function Points() {
+// It now accepts a "size" prop to control the point size.
+function Points({ size }) {
   const geometryRef = useRef();
   const mapping = useContext(PointCloudMappingContext);
 
@@ -49,7 +50,7 @@ function Points() {
   return (
     <points>
       <bufferGeometry ref={geometryRef} />
-      <pointsMaterial size={0.0004} vertexColors />
+      <pointsMaterial size={size} vertexColors />
     </points>
   );
 }
@@ -95,7 +96,9 @@ export default function PointCloudViewer({
         >
           <IoIosCloseCircleOutline
             onClick={onClose}
-            className={`${classes.closeButton} ${isDarkMode ? classes.darkCloseButton : ""}`}
+            className={`${classes.closeButton} ${
+              isDarkMode ? classes.darkCloseButton : ""
+            }`}
           />
           <DarkModeSwitch
             checked={isDarkMode}
@@ -106,17 +109,23 @@ export default function PointCloudViewer({
         </div>
 
         {isSideBarVisible && (
-          <SideBar isHeaderVisible={isHeaderVisible} setPointSize={setPointSize} />
+          <SideBar
+            isHeaderVisible={isHeaderVisible}
+            setPointSize={setPointSize}
+          />
         )}
 
         <div className={classes.canvasContainer}>
           <Canvas>
-            <color attach="background" args={isDarkMode ? ["#333"] : ["#ffffff"]} />
+            <color
+              attach="background"
+              args={isDarkMode ? ["#333"] : ["#ffffff"]}
+            />
             <ambientLight />
             <CustomOrbitControls zoomFactor={0.8} />
             <Bounds fit clip observe>
               <Center>
-                <Points />
+                <Points size={pointSize} />
               </Center>
             </Bounds>
           </Canvas>
