@@ -1,5 +1,5 @@
 // PointCloudViewer.jsx
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, useMemo } from "react";
 import { Canvas, useThree } from "@react-three/fiber";
 import { OrbitControls, Bounds, Center } from "@react-three/drei";
 import * as THREE from "three";
@@ -55,11 +55,13 @@ export default function PointCloudViewer({
   function Points({ points }) {
     const geometryRef = useRef();
 
+    // Memoize the computation so that it only re-runs when `points` changes.
+    const { positions, colors } = useMemo(() => {
+      return getZMappedColor(points, "y");
+    }, [points]);
+
     useEffect(() => {
       if (!points) return;
-
-      // Extract positions & colors from util function
-      const { positions, colors } = getZMappedColor(points, "y"); // Map colors based on Y height
 
       if (geometryRef.current) {
         geometryRef.current.setAttribute(
@@ -75,7 +77,7 @@ export default function PointCloudViewer({
         geometryRef.current.computeBoundingBox();
         geometryRef.current.computeBoundingSphere();
       }
-    }, [points]);
+    }, [points, positions, colors]);
 
     return (
       <points>
