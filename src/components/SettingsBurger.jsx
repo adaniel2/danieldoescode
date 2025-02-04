@@ -3,11 +3,6 @@ import { useState } from "react";
 import { Menu, Button, Text } from "@mantine/core";
 import {
   IconSettings,
-  IconSearch,
-  IconPhoto,
-  IconMessageCircle,
-  IconTrash,
-  IconArrowsLeftRight,
 } from "@tabler/icons-react";
 
 import { IoTerminalOutline } from "react-icons/io5";
@@ -16,11 +11,12 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import { useUIContext } from "../context/UIContext";
 
 export default function SettingsBruger({ activeLocation }) {
-  const { setConsoleVisible, setSideBarVisible } = useUIContext();
-
-  // Come back to this to see if these can be replaced now that we have the context...
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [isConsoleOpen, setIsConsoleOpen] = useState(false);
+  const {
+    isSideBarVisible,
+    isConsoleVisible,
+    setConsoleVisible,
+    setSideBarVisible,
+  } = useUIContext();
 
   return (
     <Menu shadow="md" width={200}>
@@ -41,24 +37,18 @@ export default function SettingsBruger({ activeLocation }) {
         <Menu.Item
           leftSection={<IconSettings size={16} />}
           onClick={() =>
-            setSideBarVisible((prev) => {
-              setIsSidebarOpen(!isSidebarOpen);
-              return !prev;
-            })
+            setSideBarVisible((prev) => !prev)
           }
         >
-          {isSidebarOpen ? "Hide Settings" : "Show Settings"}
+          {isSideBarVisible ? "Hide Settings" : "Show Settings"}
         </Menu.Item>
         <Menu.Item
           leftSection={<IoTerminalOutline size={16} />}
           onClick={() =>
-            setConsoleVisible((prev) => {
-              setIsConsoleOpen(!isConsoleOpen);
-              return !prev;
-            })
+            setConsoleVisible((prev) => !prev)
           }
         >
-          {isConsoleOpen ? "Hide Log" : "Show Log"}
+          {isConsoleVisible ? "Hide Log" : "Show Log"}
         </Menu.Item>
       </Menu.Dropdown>
     </Menu>
