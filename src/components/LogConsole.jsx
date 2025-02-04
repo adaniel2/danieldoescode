@@ -1,6 +1,6 @@
 // LogConsole.jsx
 import React, { useState } from "react";
-import { useConsole } from "./ConsoleContext";
+import { useConsole } from "../context/ConsoleContext";
 import classes from "./LogConsole.module.css"; // Import styles
 
 export default function LogConsole() {

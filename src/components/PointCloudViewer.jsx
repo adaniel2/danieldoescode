@@ -8,10 +8,13 @@ import { DarkModeSwitch } from "react-toggle-dark-mode";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import ToggleHeaderButton from "./ToggleHeaderButton";
 import SideBar from "./SideBar";
+
 import {
   PointCloudMappingContext,
   PointCloudMappingProvider,
-} from "./PointCloudMappingContext";
+} from "../context/PointCloudMappingContext";
+
+import { useUIContext } from "../context/UIContext";
 
 // Points component that uses the cached mapping from context and applies the given point size.
 function Points({ size }) {
@@ -20,6 +23,7 @@ function Points({ size }) {
 
   useEffect(() => {
     if (!mapping) return;
+
     if (geometryRef.current) {
       // Set positions and colors from the cached mapping.
       geometryRef.current.setAttribute(
@@ -30,6 +34,7 @@ function Points({ size }) {
         "color",
         new THREE.Float32BufferAttribute(mapping.colors, 3)
       );
+
       // Compute the bounding information.
       geometryRef.current.computeBoundingBox();
       geometryRef.current.computeBoundingSphere();
@@ -44,19 +49,13 @@ function Points({ size }) {
   );
 }
 
-export default function PointCloudViewer({
-  points,
-  onClose,
-  confirmation,
-  isHeaderVisible,
-  setHeaderVisible,
-  setViewerActive,
-  isSideBarVisible,
-}) {
+export default function PointCloudViewer({ points, onClose, confirmation }) {
   if (!points || !confirmation) return null;
 
+  const { isSideBarVisible, isHeaderVisible, setViewerActive } = useUIContext();
+
   const [isDarkMode, setDarkMode] = useState(false);
-  const [pointSize, setPointSize] = useState(0.0004);
+  const [pointSize, setPointSize] = useState(0.0004); // move this to the pointcloudmapingcontext
 
   const toggleDarkMode = (checked) => {
     setDarkMode(checked);
@@ -64,7 +63,9 @@ export default function PointCloudViewer({
 
   useEffect(() => {
     setViewerActive(true);
+
     return () => {
+      // is onClose doing this, or is this unmount enough?
       setViewerActive(false);
     };
   }, [setViewerActive]);
@@ -72,10 +73,7 @@ export default function PointCloudViewer({
   return (
     <PointCloudMappingProvider points={points} mappingAxis="y">
       <div className={classes.overlay} data-viewer-type="point-cloud">
-        <ToggleHeaderButton
-          isHeaderVisible={isHeaderVisible}
-          setHeaderVisible={setHeaderVisible}
-        />
+        <ToggleHeaderButton />
         <div
           className={classes.buttonContainer}
           style={{
@@ -97,9 +95,7 @@ export default function PointCloudViewer({
           />
         </div>
 
-        {isSideBarVisible && (
-          <SideBar isHeaderVisible={isHeaderVisible} setPointSize={setPointSize} />
-        )}
+        {isSideBarVisible && <SideBar setPointSize={setPointSize} />}
 
         <div className={classes.canvasContainer}>
           <Canvas>

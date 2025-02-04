@@ -13,11 +13,12 @@ import {
 import { IoTerminalOutline } from "react-icons/io5";
 import { RxHamburgerMenu } from "react-icons/rx";
 
-export default function SettingsBruger({
-  setConsoleVisible,
-  setSideBarVisible,
-  activeLocation,
-}) {
+import { useUIContext } from "../context/UIContext";
+
+export default function SettingsBruger({ activeLocation }) {
+  const { setConsoleVisible, setSideBarVisible } = useUIContext();
+
+  // Come back to this to see if these can be replaced now that we have the context...
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isConsoleOpen, setIsConsoleOpen] = useState(false);
 

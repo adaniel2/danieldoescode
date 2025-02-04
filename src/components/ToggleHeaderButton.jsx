@@ -4,7 +4,11 @@ import ReactDOM from "react-dom";
 import { ActionIcon, Tooltip } from "@mantine/core";
 import { PiArrowCircleDown, PiArrowCircleUp } from "react-icons/pi";
 
-export default function ToggleHeaderButton({ isHeaderVisible, setHeaderVisible }) {
+import { useUIContext } from "../context/UIContext";
+
+export default function ToggleHeaderButton() {
+  const { isHeaderVisible, setHeaderVisible } = useUIContext();
+
   return ReactDOM.createPortal(
     <Tooltip
       label={isHeaderVisible ? "Hide Header" : "Show Header"} // Tooltip text

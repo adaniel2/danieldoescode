@@ -7,10 +7,14 @@ import ConfirmationDialog from "../components/ConfirmationDialog";
 
 import "./pages.css";
 
-import { useConsole } from "../components/ConsoleContext";
+import { useConsole } from "../context/ConsoleContext";
+import { useUIContext } from "../context/UIContext";
 
-function PCV({ setViewerActive, setHeaderVisible, isHeaderVisible, isSideBarVisible }) {
+function PCV() {
+  const { setViewerActive, setHeaderVisible } = useUIContext();
+
   const { logMessage } = useConsole();
+
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
   const [points, setPoints] = useState(null);
@@ -47,12 +51,14 @@ function PCV({ setViewerActive, setHeaderVisible, isHeaderVisible, isSideBarVisi
   const handleConfirm = () => {
     logMessage(`Files confirmed.`);
     logMessage(`Point Cloud Visualizer has opened.`);
+
     setSummary(null); // clear the summary dialog
     setConfirmation(true);
   };
 
   const handleClear = () => {
     logMessage(`Point Cloud Visualizer closed.`);
+
     setFiles([]); // Clear all files
     setPoints(null); // clear points
     setConfirmation(false);
@@ -76,10 +82,6 @@ function PCV({ setViewerActive, setHeaderVisible, isHeaderVisible, isSideBarVisi
           points={points}
           onClose={handleClear}
           confirmation={confirmed}
-          isHeaderVisible={isHeaderVisible}
-          setHeaderVisible={setHeaderVisible}
-          setViewerActive={setViewerActive}
-          isSideBarVisible={isSideBarVisible}
         />
       }
     </>

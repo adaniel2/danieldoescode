@@ -11,6 +11,7 @@ export const ConsoleProvider = ({ children }) => {
   // Add log with timestamp, keeps max 100 logs
   const logMessage = (message, type = "info") => {
     const timestamp = new Date().toLocaleTimeString();
+
     setLogs((prevLogs) => {
       const newLogs = [...prevLogs, { message, type, timestamp }];
       return newLogs.length > 100 ? newLogs.slice(1) : newLogs; // Keep max 100 logs
@@ -41,6 +42,7 @@ export const ConsoleProvider = ({ children }) => {
     // Capture JavaScript runtime errors
     const handleError = (event) => {
       const message = `⚠️ JS Error: ${event.message} at ${event.filename}:${event.lineno}:${event.colno}`;
+      
       logMessage(message, "error");
     };
 

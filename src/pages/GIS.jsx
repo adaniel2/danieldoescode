@@ -5,15 +5,17 @@ import React, { useState } from "react";
 import GISViewer from "../components/GISViewer";
 import { DropzoneFileHandler } from "../utils/DropzoneFileHandler";
 
-import { useConsole } from "../components/ConsoleContext";
+import { useConsole } from "../context/ConsoleContext";
+import { useUIContext } from "../context/UIContext";
 
-function GIS({
-  setViewerActive,
-  setHeaderVisible,
-  isHeaderVisible,
-  isSideBarVisible,
-}) {
+function GIS() {
+  const {
+    setViewerActive,
+    setHeaderVisible,
+  } = useUIContext();
+
   const { logMessage } = useConsole();
+
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
   const [map, setMap] = useState(null);
@@ -21,13 +23,6 @@ function GIS({
   const processFileCallback = (fileType, data) => {
     console.log(`Processed ${fileType} Data:`, data);
     logMessage(`Uploaded file type: (${fileType})`);
-
-    const dialogSummary = data.dialogSummary;
-
-    // Set the summary dialog information
-    if (dialogSummary) {
-      setSummary(dialogSummary);
-    }
 
     // Set the map
     if (data) {
@@ -44,14 +39,9 @@ function GIS({
     );
   };
 
-  const handleConfirm = () => {
-    logMessage(`Files confirmed.`);
-    logMessage(`GIS Visualizer has opened.`);
-    setSummary(null); // clear the summary dialog
-  };
-
   const handleClear = () => {
     logMessage(`GIS Visualizer closed.`);
+
     setFiles([]); // Clear all files
     setMap(null); // clear the map
     setHeaderVisible(true); // Restore the header on viewer close
@@ -61,15 +51,8 @@ function GIS({
   return (
     <>
       {!map && <DZ onDrop={handleDrop} loading={loading} />}
-      
-      <GISViewer
-        map={map}
-        onClose={handleClear}
-        isHeaderVisible={isHeaderVisible}
-        setHeaderVisible={setHeaderVisible}
-        setViewerActive={setViewerActive}
-        isSideBarVisible={isSideBarVisible}
-      />
+
+      <GISViewer map={map} onClose={handleClear} />
     </>
   );
 }

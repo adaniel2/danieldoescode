@@ -1,6 +1,6 @@
 // App.jsx
-import React, { useState } from "react";
-import { MantineProvider, ActionIcon } from "@mantine/core";
+import React from "react";
+import { MantineProvider } from "@mantine/core";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import "@mantine/core/styles.css";
@@ -8,44 +8,45 @@ import "@mantine/dropzone/styles.css";
 import "./index.css";
 
 import LogConsole from "./components/LogConsole";
-import { ConsoleProvider } from "./components/ConsoleContext";
+import { ConsoleProvider } from "./context/ConsoleContext";
+import { UIContextProvider, useUIContext } from "./context/UIContext";
 
 function App({ children }) {
-  const [isHeaderVisible, setHeaderVisible] = useState(true);
-  const [isViewerActive, setViewerActive] = useState(false);
-  const [isConsoleVisible, setConsoleVisible] = useState(false);
-  const [isSideBarVisible, setSideBarVisible] = useState(true);
+  return (
+    <UIContextProvider>
+      <ConsoleProvider>
+        <MantineProvider
+          withGlobalStyles
+          withNormalizeCSS
+          defaultColorScheme="auto"
+        >
+          <AppContent>{children}</AppContent>
+        </MantineProvider>
+      </ConsoleProvider>
+    </UIContextProvider>
+  );
+}
+
+// This setup allows for useUIContext() to be inside the provider
+function AppContent({ children }) {
+  const { isViewerActive, isConsoleVisible, isHeaderVisible } = useUIContext();
 
   return (
-    <ConsoleProvider>
-      <MantineProvider
-        withGlobalStyles
-        withNormalizeCSS
-        defaultColorScheme="auto"
-        // theme={actionIcon}
+    <>
+      <Header />
+      <div
+        style={{
+          marginTop: isHeaderVisible ? 56 : 0,
+          height: `calc(100vh - ${isHeaderVisible ? "56px" : "0px"})`,
+          display: "flex",
+          flexDirection: "column",
+        }}
       >
-        {<Header isHeaderVisible={isHeaderVisible} setConsoleVisible={setConsoleVisible} setSideBarVisible={setSideBarVisible} isViewerActive={isViewerActive}/>}
-        <div
-          style={{
-            marginTop: isHeaderVisible ? 56 : 0,
-            height: `calc(100vh - ${isHeaderVisible ? "56px" : "0px"})`,
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          <main style={{ flex: 1 }}>
-            {React.cloneElement(children, {
-              setViewerActive,
-              setHeaderVisible,
-              isHeaderVisible,
-              isSideBarVisible
-            })}
-          </main>
-          { !isViewerActive && <Footer />}
-        </div>
-        {(isViewerActive && isConsoleVisible) && <LogConsole />}
-      </MantineProvider>
-    </ConsoleProvider>
+        <main style={{ flex: 1 }}>{React.cloneElement(children)}</main>
+        {!isViewerActive && <Footer />}
+      </div>
+      {isViewerActive && isConsoleVisible && <LogConsole />}
+    </>
   );
 }
 

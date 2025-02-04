@@ -4,7 +4,10 @@ import SideBarSlider from "./SideBarSlider";
 import SideBarCheckbox from "./SideBarCheckbox";
 import SideBarNumberInput from "./SideBarNumberInput";
 
-export default function SideBar({ isHeaderVisible, setPointSize }) {
+import { useUIContext } from "../context/UIContext";
+
+export default function SideBar({ setPointSize }) {
+  const { isHeaderVisible } = useUIContext();
 
   return (
     <div

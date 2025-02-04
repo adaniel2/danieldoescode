@@ -1,16 +1,10 @@
 // Header.jsx
 import { useState, useEffect } from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Link,
-  useLocation,
-} from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
-import { Burger, Container, Group, ActionIcon } from "@mantine/core";
+import { Container, Group } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { useBasePath } from "./BasePathContext";
+import { useBasePath } from "../context/BasePathContext";
 
 import SettingsBurger from "./SettingsBurger";
 import VoyisLogo from "../assets/voyis_logo.png";
@@ -18,12 +12,11 @@ import VoyisLogo from "../assets/voyis_logo.png";
 import classes from "./Header.module.css";
 import "@mantinex/mantine-logo/styles.css";
 
-export function Header({
-  isHeaderVisible,
-  setConsoleVisible,
-  setSideBarVisible,
-  isViewerActive,
-}) {
+import { useUIContext } from "../context/UIContext";
+
+export function Header() {
+  const { isHeaderVisible, isViewerActive } = useUIContext();
+
   const [opened, { toggle }] = useDisclosure(false);
   const location = useLocation();
   const projectRoot = useBasePath();
@@ -76,8 +69,6 @@ export function Header({
         {isViewerActive && (
           <div>
             <SettingsBurger
-              setConsoleVisible={setConsoleVisible}
-              setSideBarVisible={setSideBarVisible}
               opened={opened}
               onClick={toggle}
               activeLocation={active}

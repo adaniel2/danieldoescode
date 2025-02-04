@@ -1,7 +1,7 @@
 // routes.jsx
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { BasePathProvider } from "./components/BasePathContext";
+import { BasePathProvider } from "./context/BasePathContext";
 import Voyis from "./pages/Voyis";
 import PCV from "./pages/PCV";
 import GIS from "./pages/GIS";

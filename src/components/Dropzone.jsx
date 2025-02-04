@@ -7,24 +7,29 @@ import { useCallback } from "react";
 import { CiFileOn } from "react-icons/ci";
 import { TbFileUpload } from "react-icons/tb";
 
-const dropZoneText = {
-  "/gis": {
-    title: "Upload GIS Data",
-    subtitle: "Accepted format(s): GeoJSON",
-    accept: {
-      "application/geo+json": [".geojson"],
-      "application/json": [".json"],
-    },
-  },
-  "/3d-pcv": {
-    title: "Upload Point Cloud Data",
-    subtitle: "Accepted format(s): .xyz or .pcd",
-    accept: { "chemical/x-xyz": [".xyz"], "application/x-pcd": [".pcd"] },
-  },
-};
+import { useBasePath } from "../context/BasePathContext";
 
 export function DZ(props) {
+  const projectRoot = useBasePath();
+
+  const dropZoneText = {
+    [`${projectRoot}/gis`]: {
+      title: "Upload GIS Data",
+      subtitle: "Accepted format(s): GeoJSON",
+      accept: {
+        "application/geo+json": [".geojson"],
+        "application/json": [".json"],
+      },
+    },
+    [`${projectRoot}/3d-pcv`]: {
+      title: "Upload Point Cloud Data",
+      subtitle: "Accepted format(s): .xyz or .pcd",
+      accept: { "chemical/x-xyz": [".xyz"], "application/x-pcd": [".pcd"] },
+    },
+  };
+
   const location = useLocation();
+  
   const currPage = dropZoneText[location.pathname] || {
     title: "Drag and drop files here",
     subtitle: "Accepted formats will depend on the page",

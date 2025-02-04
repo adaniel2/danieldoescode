@@ -10,16 +10,12 @@ import { createRoot } from "react-dom/client";
 import { HiOutlineLocationMarker } from "react-icons/hi";
 import { FaMapMarkerAlt } from "react-icons/fa";
 
+import { useUIContext } from "../context/UIContext";
 
-export default function GISViewer({
-  map,
-  onClose,
-  isHeaderVisible,
-  setHeaderVisible,
-  setViewerActive,
-  isSideBarVisible,
-}) {
+export default function GISViewer({ map, onClose }) {
   if (!map) return null;
+
+  const { setViewerActive, isHeaderVisible } = useUIContext();
 
   const mapContainerRef = useRef();
   const mapRef = useRef();
@@ -98,7 +94,11 @@ export default function GISViewer({
         root.render(
           <FaMapMarkerAlt
             size={30}
-            style={{ color: "#057cbc", cursor: "pointer", transform: "translate(34%, 0%)" }} // translate to match the circle from GISLayers.js
+            style={{
+              color: "#057cbc",
+              cursor: "pointer",
+              transform: "translate(34%, 0%)",
+            }} // translate to match the circle from GISLayers.js
           />
         );
 
@@ -132,10 +132,7 @@ export default function GISViewer({
 
   return (
     <div className={classes.overlay}>
-      <ToggleHeaderButton
-        isHeaderVisible={isHeaderVisible}
-        setHeaderVisible={setHeaderVisible}
-      />
+      <ToggleHeaderButton />
       <div
         className={classes.buttonContainer}
         style={{

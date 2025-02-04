@@ -1,10 +1,9 @@
 // Voyis.jsx
-import { useState } from "react";
 import { IoEarthOutline } from "react-icons/io5";
 import { LuRotate3D } from "react-icons/lu";
 import "./pages.css";
 import { Link } from "react-router-dom";
-import { useBasePath } from "../components/BasePathContext";
+import { useBasePath } from "../context/BasePathContext";
 
 function Voyis() {
   const projectRoot = useBasePath(); // Get the correct base path
