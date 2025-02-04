@@ -55,7 +55,6 @@ function GIS({
     setFiles([]); // Clear all files
     setMap(null); // clear the map
     setHeaderVisible(true); // Restore the header on viewer close
-    setSummary(null);
     setViewerActive(false);
   };
 

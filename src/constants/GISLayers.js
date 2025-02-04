@@ -1,10 +1,10 @@
 export const GIS_LAYERS = [
-    {
-      id: "geojson-points",
-      type: "circle",
-      paint: { "circle-radius": 6, "circle-color": "#007cbf" },
-      filter: ["==", "$type", "Point"],
-    },
+    // {
+    //   id: "geojson-points",
+    //   type: "circle",
+    //   paint: { "circle-radius": 6, "circle-color": "#007cbf" },
+    //   filter: ["==", "$type", "Point"],
+    // },
     {
       id: "geojson-lines",
       type: "line",

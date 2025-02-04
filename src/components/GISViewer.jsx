@@ -6,6 +6,10 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import classes from "./GISViewer.module.css";
 import ToggleHeaderButton from "./ToggleHeaderButton";
 import { IoIosCloseCircleOutline } from "react-icons/io";
+import { createRoot } from "react-dom/client";
+import { HiOutlineLocationMarker } from "react-icons/hi";
+import { FaMapMarkerAlt } from "react-icons/fa";
+
 
 export default function GISViewer({
   map,
@@ -28,8 +32,10 @@ export default function GISViewer({
     // Initialize the map
     mapRef.current = new mapboxgl.Map({
       container: mapContainerRef.current,
+      style: "mapbox://styles/mapbox/streets-v11", // This map is 2D, can remove to go back to 3D
       zoom: 5,
       interactive: true, // Allows pan & zoom
+      // pitch: 0,
     });
 
     mapRef.current.on("load", () => {
@@ -70,8 +76,52 @@ export default function GISViewer({
       );
 
       pointFeatures.forEach((feature) => {
-        new mapboxgl.Marker()
-          .setLngLat(feature.geometry.coordinates)
+        const coordinates = feature.geometry.coordinates;
+
+        const description = feature.properties.description || "No description";
+        const tags = feature.properties.tags
+          ? feature.properties.tags.join(", ")
+          : "No tags";
+
+        // Create a popup
+        const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
+          `<p><strong>Coordinates:</strong> ${coordinates.join(", ")}</p>
+          <p><strong>Description:</strong> ${description}</p>
+          <p><strong>Tags:</strong> ${tags}</p>`
+        );
+
+        // Create a custom marker element.
+        const el = document.createElement("div");
+        el.className = classes.customMarker;
+
+        const root = createRoot(el);
+        root.render(
+          <FaMapMarkerAlt
+            size={30}
+            style={{ color: "#057cbc", cursor: "pointer", transform: "translate(34%, 0%)" }} // translate to match the circle from GISLayers.js
+          />
+        );
+
+        // Add a click event listener that toggles the popup.
+        el.addEventListener("click", (e) => {
+          // Prevent the map's default click behavior.
+          e.stopPropagation();
+
+          if (popup.isOpen()) {
+            popup.remove();
+          } else {
+            popup.addTo(mapRef.current);
+          }
+        });
+
+        el.addEventListener("dblclick", (e) => {
+          e.stopPropagation();
+          e.preventDefault();
+        });
+
+        new mapboxgl.Marker({ element: el })
+          .setLngLat(coordinates)
+          .setPopup(popup)
           .addTo(mapRef.current);
       });
 
