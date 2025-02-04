@@ -10,17 +10,13 @@ import {
 
 import { Burger, Container, Group, ActionIcon } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { useBasePath } from "./BasePathContext";
 
 import SettingsBurger from "./SettingsBurger";
 import VoyisLogo from "../assets/voyis_logo.png";
 
 import classes from "./Header.module.css";
 import "@mantinex/mantine-logo/styles.css";
-
-const links = [
-  { link: "/gis", label: "GIS" },
-  { link: "/3d-pcv", label: "3D Viewer" },
-];
 
 export function Header({
   isHeaderVisible,
@@ -30,12 +26,19 @@ export function Header({
 }) {
   const [opened, { toggle }] = useDisclosure(false);
   const location = useLocation();
+  const projectRoot = useBasePath();
   const [active, setActive] = useState(location.pathname);
 
   useEffect(() => {
     // listening for route changes that weren't via setActive
     setActive(location.pathname);
   }, [location.pathname]);
+
+  // Adjust links to be relative to project root
+  const links = [
+    { link: `${projectRoot}/gis`, label: "GIS" },
+    { link: `${projectRoot}/3d-pcv`, label: "3D Viewer" },
+  ];
 
   const items = links.map((link) => (
     <Link
@@ -56,7 +59,7 @@ export function Header({
     >
       <Container size="lg" className={classes.inner}>
         {/* <VoyisLogo size={28} /> */}
-        <Link to="/" onClick={() => setActive("/")}>
+        <Link to={projectRoot} onClick={() => setActive(projectRoot)}>
           <img
             src={VoyisLogo}
             alt="Voyis logo"
