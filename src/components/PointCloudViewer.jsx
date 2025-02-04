@@ -52,7 +52,13 @@ function Points({ size }) {
 export default function PointCloudViewer({ points, onClose, confirmation }) {
   if (!points || !confirmation) return null;
 
-  const { isSideBarVisible, isHeaderVisible, setViewerActive } = useUIContext();
+  const {
+    isSideBarVisible,
+    isHeaderVisible,
+    setViewerActive,
+    setSideBarVisible,
+    setConsoleVisible,
+  } = useUIContext();
 
   const [isDarkMode, setDarkMode] = useState(false);
   const [pointSize, setPointSize] = useState(0.0004); // move this to the pointcloudmapingcontext
@@ -63,6 +69,8 @@ export default function PointCloudViewer({ points, onClose, confirmation }) {
 
   useEffect(() => {
     setViewerActive(true);
+    setSideBarVisible(true);
+    setConsoleVisible(false);
 
     return () => {
       // is onClose doing this, or is this unmount enough?
