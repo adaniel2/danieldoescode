@@ -12,8 +12,8 @@ import { FaMapMarkerAlt } from "react-icons/fa";
 
 import { useUIContext } from "../context/UIContext";
 
-export default function GISViewer({ map, onClose }) {
-  if (!map) return null;
+export default function GISViewer({ map, onClose, confirmation }) {
+  if (!map || !confirmation) return null;
 
   const { setViewerActive, isHeaderVisible } = useUIContext();
 

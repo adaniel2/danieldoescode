@@ -4,25 +4,32 @@ import "./pages.css";
 import React, { useState } from "react";
 import GISViewer from "../components/GISViewer";
 import { DropzoneFileHandler } from "../utils/DropzoneFileHandler";
+import ConfirmationDialog from "../components/ConfirmationDialog";
 
 import { useConsole } from "../context/ConsoleContext";
 import { useUIContext } from "../context/UIContext";
 
 function GIS() {
-  const {
-    setViewerActive,
-    setHeaderVisible,
-  } = useUIContext();
+  const { setViewerActive, setHeaderVisible } = useUIContext();
 
   const { logMessage } = useConsole();
 
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
   const [map, setMap] = useState(null);
+  const [summary, setSummary] = useState(null);
+  const [confirmed, setConfirmation] = useState(false);
 
   const processFileCallback = (fileType, data) => {
     console.log(`Processed ${fileType} Data:`, data);
     logMessage(`Uploaded file type: (${fileType})`);
+
+    const dialogSummary = data.dialogSummary;
+
+    // Set the summary dialog information
+    if (dialogSummary) {
+      setSummary(dialogSummary);
+    }
 
     // Set the map
     if (data) {
@@ -39,20 +46,36 @@ function GIS() {
     );
   };
 
+  const handleConfirm = () => {
+    logMessage(`File confirmed.`);
+    logMessage(`GIS Visualizer has opened.`);
+
+    setSummary(null); // clear the summary dialog
+    setConfirmation(true);
+  };
+
   const handleClear = () => {
     logMessage(`GIS Visualizer closed.`);
 
     setFiles([]); // Clear all files
     setMap(null); // clear the map
+    setConfirmation(false);
     setHeaderVisible(true); // Restore the header on viewer close
+    setSummary(null);
     setViewerActive(false);
   };
 
   return (
     <>
       {!map && <DZ onDrop={handleDrop} loading={loading} />}
-
-      <GISViewer map={map} onClose={handleClear} />
+      {summary && (
+        <ConfirmationDialog
+          summary={summary}
+          onConfirm={handleConfirm}
+          onCancel={handleClear}
+        />
+      )}
+      <GISViewer map={map} onClose={handleClear} confirmation={confirmed}/>
     </>
   );
 }

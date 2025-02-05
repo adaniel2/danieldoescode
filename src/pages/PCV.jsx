@@ -49,7 +49,7 @@ function PCV() {
   };
 
   const handleConfirm = () => {
-    logMessage(`Files confirmed.`);
+    logMessage(`File confirmed.`);
     logMessage(`Point Cloud Visualizer has opened.`);
 
     setSummary(null); // clear the summary dialog

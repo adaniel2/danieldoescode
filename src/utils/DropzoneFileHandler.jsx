@@ -4,6 +4,7 @@ import { XYZLoader } from "three/addons/loaders/XYZLoader.js"; // Import XYZLoad
 import * as THREE from "three";
 
 import generatePointCloudSummary from '../utils/PointCloudSummaryGenerator';
+import generateJSONSummary from '../utils/GISSummaryGenerator';
 
 export const DropzoneFileHandler = (
   acceptedFiles,
@@ -77,6 +78,10 @@ export const DropzoneFileHandler = (
 
             const json = JSON.parse(data);
 
+            // Create .json summary object
+            const jsonSummary = generateJSONSummary(file);
+            json.dialogSummary = jsonSummary;
+            
             processFileCallback(fileType, json);
             break;
 

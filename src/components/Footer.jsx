@@ -33,7 +33,7 @@ export function Footer() {
             color="gray"
             variant="subtle"
             component="a"
-            href="https://github.com/adaniel2"
+            href="https://github.com/adaniel2/danieldoescode"
             target="_blank">
               <IconBrandGithub size={24} stroke={1.5} />
           </ActionIcon>
