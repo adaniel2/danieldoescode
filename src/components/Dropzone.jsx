@@ -1,7 +1,6 @@
 // Dropzone.jsx
 import { useDropzone } from "react-dropzone";
-import { Group, Text, Stack } from "@mantine/core";
-import { IconPhoto } from "@tabler/icons-react";
+import { Text, Stack } from "@mantine/core";
 import { useLocation } from "react-router-dom";
 import { useCallback } from "react";
 import { CiFileOn } from "react-icons/ci";

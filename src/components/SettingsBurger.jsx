@@ -1,6 +1,5 @@
 // SettingsBurger.jsx
-import { useState } from "react";
-import { Menu, Button, Text } from "@mantine/core";
+import { Menu, Button } from "@mantine/core";
 import {
   IconSettings,
 } from "@tabler/icons-react";
