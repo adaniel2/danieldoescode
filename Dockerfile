@@ -30,8 +30,8 @@
     # For example, if you need to handle client-side routing:
     COPY nginx.conf /etc/nginx/conf.d/default.conf
     
-    # Expose port 80
-    EXPOSE 80
+    # Expose port
+    EXPOSE 8081
     
     # Start Nginx
     CMD ["nginx", "-g", "daemon off;"]
