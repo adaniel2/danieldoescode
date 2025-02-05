@@ -7,7 +7,6 @@ import classes from "./GISViewer.module.css";
 import ToggleHeaderButton from "./ToggleHeaderButton";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import SideBar from "./SideBar";
-
 import { useUIContext } from "../context/UIContext";
 import { useSideBarContext } from "../context/SideBarContext";
 
@@ -27,9 +26,9 @@ export default function GISViewer({ map, onClose, confirmation }) {
 
   const mapContainerRef = useRef();
   const mapRef = useRef();
-  const markersRef = useRef([]); // to store default point markers
+  const markersRef = useRef([]); // To store default markers for point features
 
-  // Helper function to add default markers for point features from a GeoJSON object
+  // Helper function to add default markers for point features
   const addPointMarkers = (geojson) => {
     const pointFeatures = geojson.features.filter(
       (feature) => feature.geometry.type === "Point"
@@ -55,7 +54,7 @@ export default function GISViewer({ map, onClose, confirmation }) {
     }
   };
 
-  // Helper function to remove all point markers from the map
+  // Helper function to remove all default point markers from the map
   const removePointMarkers = () => {
     markersRef.current.forEach((marker) => marker.remove());
     markersRef.current = [];
@@ -85,7 +84,7 @@ export default function GISViewer({ map, onClose, confirmation }) {
       const bounds = bbox(map);
       mapRef.current.fitBounds(bounds, { padding: 50, maxZoom: 10 });
 
-      // Add layers for non-point features (lines and polygons) only
+      // Add layers for non-point features (polygons and lines)
       const addLayer = (id, type, paint, filter) => {
         if (!mapRef.current.getLayer(id)) {
           mapRef.current.addLayer({
@@ -98,12 +97,12 @@ export default function GISViewer({ map, onClose, confirmation }) {
         }
       };
 
-      // Only add layers for features other than points
+      // Exclude point layers because we are using custom markers
       GIS_LAYERS.filter((layer) => layer.id !== "geojson-points").forEach(
         ({ id, type, paint, filter }) => addLayer(id, type, paint, filter)
       );
 
-      // Add default markers for point features using the initial data
+      // Add default markers for point features using the initial data.
       addPointMarkers(map);
 
       // Set viewer as active
@@ -112,38 +111,41 @@ export default function GISViewer({ map, onClose, confirmation }) {
     });
   }, [map, setActiveViewer, setViewerActive]);
 
-  // Update the data source and markers when the filter changes
+  // Update filtering for all features (points, lines, and polygons)
   useEffect(() => {
     if (!mapRef.current) return;
 
-    console.log("Updating map filter with:", gisPointsFilter);
+    // Normalize the search term for case-insensitive comparison.
+    const searchTerm = gisPointsFilter.toLowerCase();
 
     const filteredData = {
       ...map,
       features: map.features.filter((feature) => {
         const tags = feature.properties.tags || [];
         const type = feature.geometry.type || "";
-        const coords = feature.geometry.coordinates || [];
-        
-        return tags
-          .join(" ")
-          .toLowerCase()
-          .includes(gisPointsFilter.toLowerCase());
+        // Flatten coordinates in case they are nested (e.g., for polygons or lines)
+        const coords = Array.isArray(feature.geometry.coordinates)
+          ? feature.geometry.coordinates.flat(Infinity)
+          : [];
+        const description = feature.properties.description || "";
+
+        return (
+          tags.join(" ").toLowerCase().includes(searchTerm) ||
+          type.toLowerCase().includes(searchTerm) ||
+          coords.join(" ").toLowerCase().includes(searchTerm) ||
+          description.toLowerCase().includes(searchTerm)
+        );
       }),
     };
 
-    console.log(filteredData);
-
-    // Update the source (for non-point layers)
+    // Update the GeoJSON source (affects non-point layers)
     const source = mapRef.current.getSource("geojson-layer");
     if (source) {
       source.setData(filteredData);
     }
 
-    // Update the default markers for points:
-    // 1. Remove existing markers.
+    // Update default markers for point features
     removePointMarkers();
-    // 2. Add new markers for the filtered point features.
     addPointMarkers(filteredData);
   }, [gisPointsFilter, map]);
 
