@@ -22,7 +22,7 @@ export default function SettingsBruger({ activeLocation }) {
     <Menu shadow="md" width={200}>
       <Menu.Target>
         <Button leftSection={<RxHamburgerMenu />} variant="default">
-          Menu
+          Settings
         </Button>
       </Menu.Target>
 
@@ -40,7 +40,7 @@ export default function SettingsBruger({ activeLocation }) {
             setSideBarVisible((prev) => !prev)
           }
         >
-          {isSideBarVisible ? "Hide Settings" : "Show Settings"}
+          {isSideBarVisible ? "Hide Sidebar" : "Show Sidebar"}
         </Menu.Item>
         <Menu.Item
           leftSection={<IoTerminalOutline size={16} />}
@@ -48,7 +48,7 @@ export default function SettingsBruger({ activeLocation }) {
             setConsoleVisible((prev) => !prev)
           }
         >
-          {isConsoleVisible ? "Hide Log" : "Show Log"}
+          {isConsoleVisible ? "Hide Logs" : "Show Logs"}
         </Menu.Item>
       </Menu.Dropdown>
     </Menu>
