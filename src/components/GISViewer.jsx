@@ -6,8 +6,6 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import classes from "./GISViewer.module.css";
 import ToggleHeaderButton from "./ToggleHeaderButton";
 import { IoIosCloseCircleOutline } from "react-icons/io";
-import { createRoot } from "react-dom/client";
-import { FaMapMarkerAlt } from "react-icons/fa";
 import SideBar from "./SideBar";
 
 import { useUIContext } from "../context/UIContext";
@@ -29,6 +27,39 @@ export default function GISViewer({ map, onClose, confirmation }) {
 
   const mapContainerRef = useRef();
   const mapRef = useRef();
+  const markersRef = useRef([]); // to store default point markers
+
+  // Helper function to add default markers for point features from a GeoJSON object
+  const addPointMarkers = (geojson) => {
+    const pointFeatures = geojson.features.filter(
+      (feature) => feature.geometry.type === "Point"
+    );
+    for (const feature of pointFeatures) {
+      const coordinates = feature.geometry.coordinates;
+      const description = feature.properties.description || "No description";
+      const tags = feature.properties.tags
+        ? feature.properties.tags.join(", ")
+        : "No tags";
+
+      const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
+        `<p><strong>Coordinates:</strong> ${coordinates.join(", ")}</p>
+         <p><strong>Description:</strong> ${description}</p>
+         <p><strong>Tags:</strong> ${tags}</p>`
+      );
+
+      const marker = new mapboxgl.Marker()
+        .setLngLat(coordinates)
+        .setPopup(popup)
+        .addTo(mapRef.current);
+      markersRef.current.push(marker);
+    }
+  };
+
+  // Helper function to remove all point markers from the map
+  const removePointMarkers = () => {
+    markersRef.current.forEach((marker) => marker.remove());
+    markersRef.current = [];
+  };
 
   useEffect(() => {
     if (mapRef.current) return; // Prevent duplicate initialization
@@ -36,27 +67,25 @@ export default function GISViewer({ map, onClose, confirmation }) {
     // Initialize the map
     mapRef.current = new mapboxgl.Map({
       container: mapContainerRef.current,
-      style: "mapbox://styles/mapbox/streets-v11", // This map is 2D, can remove to go back to 3D
+      style: "mapbox://styles/mapbox/streets-v11", // 2D view
       zoom: 5,
-      interactive: true, // Allows pan & zoom
-      // pitch: 0,
+      interactive: true,
     });
 
     mapRef.current.on("load", () => {
-      // Add GeoJSON Source
+      // Add GeoJSON source
       if (!mapRef.current.getSource("geojson-layer")) {
-        // Prevent duplicate
         mapRef.current.addSource("geojson-layer", {
           type: "geojson",
           data: map,
         });
       }
 
-      // Compute bounding box using Turf.js
+      // Fit bounds to the data using Turf.js
       const bounds = bbox(map);
       mapRef.current.fitBounds(bounds, { padding: 50, maxZoom: 10 });
 
-      // Function to add layers dynamically
+      // Add layers for non-point features (lines and polygons) only
       const addLayer = (id, type, paint, filter) => {
         if (!mapRef.current.getLayer(id)) {
           mapRef.current.addLayer({
@@ -69,111 +98,53 @@ export default function GISViewer({ map, onClose, confirmation }) {
         }
       };
 
-      // Add layers dynamically
-      GIS_LAYERS.forEach(({ id, type, paint, filter }) =>
-        addLayer(id, type, paint, filter)
+      // Only add layers for features other than points
+      GIS_LAYERS.filter((layer) => layer.id !== "geojson-points").forEach(
+        ({ id, type, paint, filter }) => addLayer(id, type, paint, filter)
       );
 
-      // Add markers
-      const pointFeatures = map.features.filter(
-        (f) => f.geometry.type === "Point"
-      );
-
-      pointFeatures.forEach((feature) => {
-        const coordinates = feature.geometry.coordinates;
-
-        const description = feature.properties.description || "No description";
-        const tags = feature.properties.tags
-          ? feature.properties.tags.join(", ")
-          : "No tags";
-
-        // Create a popup
-        const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
-          `<p><strong>Coordinates:</strong> ${coordinates.join(", ")}</p>
-          <p><strong>Description:</strong> ${description}</p>
-          <p><strong>Tags:</strong> ${tags}</p>`
-        );
-
-        // Create a custom marker element.
-        const el = document.createElement("div");
-        el.className = classes.customMarker;
-
-        const root = createRoot(el);
-        root.render(
-          <FaMapMarkerAlt
-            size={30}
-            style={{
-              color: "#057cbc",
-              cursor: "pointer",
-              transform: "translate(34%, 0%)",
-            }} // translate to match the circle from GISLayers.js
-          />
-        );
-
-        // Add a click event listener that toggles the popup.
-        el.addEventListener("click", (e) => {
-          // Prevent the map's default click behavior.
-          e.stopPropagation();
-
-          if (popup.isOpen()) {
-            popup.remove();
-          } else {
-            popup.addTo(mapRef.current);
-          }
-        });
-
-        el.addEventListener("dblclick", (e) => {
-          e.stopPropagation();
-          e.preventDefault();
-        });
-
-        new mapboxgl.Marker({ element: el })
-          .setLngLat(coordinates)
-          .setPopup(popup)
-          .addTo(mapRef.current);
-      });
+      // Add default markers for point features using the initial data
+      addPointMarkers(map);
 
       // Set viewer as active
       setViewerActive(true);
       setActiveViewer("gis");
     });
-  }, [map]);
+  }, [map, setActiveViewer, setViewerActive]);
 
+  // Update the data source and markers when the filter changes
   useEffect(() => {
-    // Ensure that the map has been initialized before trying to update filters
     if (!mapRef.current) return;
 
     console.log("Updating map filter with:", gisPointsFilter);
 
-    // Example: Update a filter on a specific layer.
-    // You may need to adjust this based on how your filtering should work.
-    // Here we assume you have a layer with id "some-layer" that should be filtered.
-
-    // Example using map.setFilter:
-    // mapRef.current.setFilter("some-layer", [
-    //   "all",
-    //   ["in", "tags", gisPointsFilter], // Adjust based on your data structure
-    // ]);
-
-    // Or, if you need to update the source's data:
-    // Get your original data, filter it, and then update the source.
     const filteredData = {
       ...map,
       features: map.features.filter((feature) => {
-        // Example filter: check if the feature's tags include the filter text
         const tags = feature.properties.tags || [];
+        const type = feature.geometry.type || "";
+        const coords = feature.geometry.coordinates || [];
+        
         return tags
           .join(" ")
           .toLowerCase()
           .includes(gisPointsFilter.toLowerCase());
       }),
-    };a
+    };
 
-    // Update the source with the filtered data
+    console.log(filteredData);
+
+    // Update the source (for non-point layers)
     const source = mapRef.current.getSource("geojson-layer");
     if (source) {
       source.setData(filteredData);
     }
+
+    // Update the default markers for points:
+    // 1. Remove existing markers.
+    removePointMarkers();
+    // 2. Add new markers for the filtered point features.
+    addPointMarkers(filteredData);
   }, [gisPointsFilter, map]);
 
   return (
