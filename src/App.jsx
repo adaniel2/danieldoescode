@@ -41,6 +41,7 @@ function AppContent({ children }) {
           display: "flex",
           flexDirection: "column",
         }}
+        className="app-container"
       >
         <main style={{ flex: 1 }}>{React.cloneElement(children)}</main>
         {!isViewerActive && <Footer />}

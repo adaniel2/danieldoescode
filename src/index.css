@@ -39,12 +39,6 @@ html, body {
   box-sizing: border-box; */
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
+.app-container {
+  background-color: #242424;
 }

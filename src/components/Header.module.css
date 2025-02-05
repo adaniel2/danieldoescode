@@ -3,7 +3,7 @@
   height: 56px;
   /* margin: 10px; */
   border-bottom: 1px solid
-    light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+    light-dark(var(--mantine-color-dark-4), var(--mantine-color-dark-4));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -12,7 +12,7 @@
   left: 0;
   width: 100%;
   z-index: 9999;
-  background-color: var(--mantine-color-body);
+  background-color: #242424;
   transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
 }
 
@@ -36,13 +36,13 @@
   padding: 8px 12px;
   border-radius: var(--mantine-radius-sm);
   text-decoration: none;
-  color: light-dark(var(--mantine-color-gray-7), var(--mantine-color-dark-0));
+  color: light-dark(var(--mantine-color-dark-0), var(--mantine-color-dark-0));
   font-size: var(--mantine-font-size-sm);
   font-weight: 500;
 
   @mixin hover {
     background-color: light-dark(
-      var(--mantine-color-gray-0),
+      var(--mantine-color-dark-6),
       var(--mantine-color-dark-6)
     );
     transition: 0.3s;
