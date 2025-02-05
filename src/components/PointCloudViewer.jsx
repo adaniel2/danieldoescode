@@ -58,6 +58,7 @@ export default function PointCloudViewer({ points, onClose, confirmation }) {
     setViewerActive,
     setSideBarVisible,
     setConsoleVisible,
+    setActiveViewer,
   } = useUIContext();
 
   const [isDarkMode, setDarkMode] = useState(false);
@@ -69,6 +70,7 @@ export default function PointCloudViewer({ points, onClose, confirmation }) {
 
   useEffect(() => {
     setViewerActive(true);
+    setActiveViewer("pcv");
     setSideBarVisible(true);
     setConsoleVisible(false);
 

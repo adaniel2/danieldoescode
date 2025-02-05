@@ -10,6 +10,8 @@ const UIContext = createContext({
   setConsoleVisible: () => {},
   isSideBarVisible: true,
   setSideBarVisible: () => {},
+  activeViewer: null,
+  setActiveViewer: () => {},
 });
 
 export function useUIContext() {
@@ -22,6 +24,7 @@ export function UIContextProvider({ children }) {
   const [isViewerActive, setViewerActive] = useState(false);
   const [isConsoleVisible, setConsoleVisible] = useState(false);
   const [isSideBarVisible, setSideBarVisible] = useState(true);
+  const [activeViewer, setActiveViewer] = useState(null);
 
   // Provider for states and setters
   return (
@@ -35,6 +38,8 @@ export function UIContextProvider({ children }) {
         setConsoleVisible,
         isSideBarVisible,
         setSideBarVisible,
+        activeViewer,
+        setActiveViewer,
       }}
     >
       {children}

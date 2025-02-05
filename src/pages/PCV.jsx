@@ -9,9 +9,10 @@ import "./pages.css";
 
 import { useConsole } from "../context/ConsoleContext";
 import { useUIContext } from "../context/UIContext";
+import { SideBarContextProvider } from "../context/SideBarContext";
 
 function PCV() {
-  const { setViewerActive, setHeaderVisible } = useUIContext();
+  const { setViewerActive, setHeaderVisible, setActiveViewer } = useUIContext();
 
   const { logMessage } = useConsole();
 
@@ -20,7 +21,6 @@ function PCV() {
   const [points, setPoints] = useState(null);
   const [summary, setSummary] = useState(null);
   const [confirmed, setConfirmation] = useState(false);
-
 
   const processFileCallback = (fileType, data) => {
     console.log(`Processed ${fileType} Data:`, data);
@@ -65,6 +65,7 @@ function PCV() {
     setHeaderVisible(true); // Restore the header on viewer close
     setSummary(null);
     setViewerActive(false);
+    setActiveViewer(null);
   };
 
   return (
@@ -77,13 +78,15 @@ function PCV() {
           onCancel={handleClear}
         />
       )}
-      {
-        <PointCloudViewer
-          points={points}
-          onClose={handleClear}
-          confirmation={confirmed}
-        />
-      }
+      <SideBarContextProvider>
+        {
+          <PointCloudViewer
+            points={points}
+            onClose={handleClear}
+            confirmation={confirmed}
+          />
+        }
+      </SideBarContextProvider>
     </>
   );
 }

@@ -8,9 +8,10 @@ import ConfirmationDialog from "../components/ConfirmationDialog";
 
 import { useConsole } from "../context/ConsoleContext";
 import { useUIContext } from "../context/UIContext";
+import { SideBarContextProvider } from "../context/SideBarContext";
 
 function GIS() {
-  const { setViewerActive, setHeaderVisible } = useUIContext();
+  const { setViewerActive, setHeaderVisible, setActiveViewer } = useUIContext();
 
   const { logMessage } = useConsole();
 
@@ -63,6 +64,7 @@ function GIS() {
     setHeaderVisible(true); // Restore the header on viewer close
     setSummary(null);
     setViewerActive(false);
+    setActiveViewer(null);
   };
 
   return (
@@ -75,7 +77,9 @@ function GIS() {
           onCancel={handleClear}
         />
       )}
-      <GISViewer map={map} onClose={handleClear} confirmation={confirmed}/>
+      <SideBarContextProvider>
+        <GISViewer map={map} onClose={handleClear} confirmation={confirmed} />
+      </SideBarContextProvider>
     </>
   );
 }

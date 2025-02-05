@@ -71,7 +71,6 @@ export function Header() {
             <SettingsBurger
               opened={opened}
               onClick={toggle}
-              activeLocation={active}
               size="sm"
             />
           </div>

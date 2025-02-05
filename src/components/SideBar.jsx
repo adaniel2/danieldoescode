@@ -3,11 +3,29 @@ import React from "react";
 import SideBarSlider from "./SideBarSlider";
 import SideBarCheckbox from "./SideBarCheckbox";
 import SideBarNumberInput from "./SideBarNumberInput";
+import SideBarTextInput from "./SideBarTextInput";
 
 import { useUIContext } from "../context/UIContext";
 
 export default function SideBar({ setPointSize }) {
-  const { isHeaderVisible } = useUIContext();
+  const { isHeaderVisible, activeViewer } = useUIContext();
+
+  const SideBarComponents = {
+    gis: (
+      <>
+        <SideBarTextInput />
+      </>
+    ),
+    pcv: (
+      <>
+        <SideBarSlider />
+        <SideBarCheckbox />
+        <SideBarCheckbox />
+        <SideBarCheckbox />
+        <SideBarNumberInput setPointSize={setPointSize} />
+      </>
+    ),
+  };
 
   return (
     <div
@@ -18,11 +36,7 @@ export default function SideBar({ setPointSize }) {
       }}
     >
       <div className={classes.sidebarItems}>
-        <SideBarSlider />
-        <SideBarCheckbox />
-        <SideBarCheckbox />
-        <SideBarCheckbox />
-        <SideBarNumberInput setPointSize={setPointSize}/>
+        {SideBarComponents[activeViewer] || null}
       </div>
     </div>
   );

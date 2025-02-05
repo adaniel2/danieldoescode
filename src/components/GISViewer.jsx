@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import mapboxgl from "mapbox-gl";
 import bbox from "@turf/bbox";
 import { GIS_LAYERS } from "../constants/GISLayers";
@@ -7,22 +7,30 @@ import classes from "./GISViewer.module.css";
 import ToggleHeaderButton from "./ToggleHeaderButton";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { createRoot } from "react-dom/client";
-import { HiOutlineLocationMarker } from "react-icons/hi";
 import { FaMapMarkerAlt } from "react-icons/fa";
+import SideBar from "./SideBar";
 
 import { useUIContext } from "../context/UIContext";
+import { useSideBarContext } from "../context/SideBarContext";
 
 export default function GISViewer({ map, onClose, confirmation }) {
   if (!map || !confirmation) return null;
 
-  const { setViewerActive, isHeaderVisible } = useUIContext();
+  mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
+
+  const {
+    setViewerActive,
+    isHeaderVisible,
+    isSideBarVisible,
+    setActiveViewer,
+  } = useUIContext();
+
+  const { gisPointsFilter } = useSideBarContext();
 
   const mapContainerRef = useRef();
   const mapRef = useRef();
 
   useEffect(() => {
-    mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
-
     if (mapRef.current) return; // Prevent duplicate initialization
 
     // Initialize the map
@@ -127,8 +135,46 @@ export default function GISViewer({ map, onClose, confirmation }) {
 
       // Set viewer as active
       setViewerActive(true);
+      setActiveViewer("gis");
     });
   }, [map]);
+
+  useEffect(() => {
+    // Ensure that the map has been initialized before trying to update filters
+    if (!mapRef.current) return;
+
+    console.log("Updating map filter with:", gisPointsFilter);
+
+    // Example: Update a filter on a specific layer.
+    // You may need to adjust this based on how your filtering should work.
+    // Here we assume you have a layer with id "some-layer" that should be filtered.
+
+    // Example using map.setFilter:
+    // mapRef.current.setFilter("some-layer", [
+    //   "all",
+    //   ["in", "tags", gisPointsFilter], // Adjust based on your data structure
+    // ]);
+
+    // Or, if you need to update the source's data:
+    // Get your original data, filter it, and then update the source.
+    const filteredData = {
+      ...map,
+      features: map.features.filter((feature) => {
+        // Example filter: check if the feature's tags include the filter text
+        const tags = feature.properties.tags || [];
+        return tags
+          .join(" ")
+          .toLowerCase()
+          .includes(gisPointsFilter.toLowerCase());
+      }),
+    };a
+
+    // Update the source with the filtered data
+    const source = mapRef.current.getSource("geojson-layer");
+    if (source) {
+      source.setData(filteredData);
+    }
+  }, [gisPointsFilter, map]);
 
   return (
     <div className={classes.overlay}>
@@ -145,6 +191,9 @@ export default function GISViewer({ map, onClose, confirmation }) {
           className={classes.closeButton}
         />
       </div>
+
+      {isSideBarVisible && <SideBar />}
+
       <div
         style={{ height: "100%" }}
         ref={mapContainerRef}

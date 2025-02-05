@@ -10,7 +10,7 @@ import { RxHamburgerMenu } from "react-icons/rx";
 
 import { useUIContext } from "../context/UIContext";
 
-export default function SettingsBruger({ activeLocation }) {
+export default function SettingsBruger() {
   const {
     isSideBarVisible,
     isConsoleVisible,
