@@ -18,10 +18,10 @@ export default function SideBar({ setPointSize }) {
     ),
     pcv: (
       <>
-        <SideBarSlider />
-        <SideBarCheckbox />
-        <SideBarCheckbox />
-        <SideBarCheckbox />
+        {/* <SideBarSlider /> */}
+        {/* <SideBarCheckbox /> */}
+        {/* <SideBarCheckbox /> */}
+        {/* <SideBarCheckbox /> */}
         <SideBarNumberInput setPointSize={setPointSize} />
       </>
     ),
