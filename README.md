@@ -8,7 +8,7 @@
 
 This demo quickly goes through all the implemented features as of Feb 5th, 2025 for the Voyis project.
 
-🔗 [Watch Demo](https://github.com/user-attachments/assets/bd9c131c-e0aa-4683-be93-e67bd1e09dac)
+https://github.com/user-attachments/assets/855dfca6-934e-4205-94dd-d93af862cd3c
 
 Check out the full website here: [danieldoescode.com](https://danieldoescode.com) *(coming soon)*
 
@@ -20,6 +20,21 @@ Check out the full website here: [danieldoescode.com](https://danieldoescode.com
 - **npm**: v10.9.2 (or higher)
 
 It may be possible to use v20 or higher as some dependencies require it, but this project was developed with the versions above.
+
+## 🛠️ Technologies Used
+
+This project is built with:
+
+- **[React](https://reactjs.org/)** - Frontend framework
+- **[Vite](https://vitejs.dev/)** - Fast development tooling
+- **[JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)** - Programming language
+- **[React Router](https://reactrouter.com/)** - Client-side routing
+- **[Mantine](https://mantine.dev/)** - UI component library
+- **[Amazon EC2](https://aws.amazon.com/ec2/)** - Hosting infrastructure
+- **[Docker](https://www.docker.com/)** - Containerization
+- **[GitHub Actions](https://github.com/features/actions)** - CI/CD automation
+- **(Coming Soon) [Tailwind CSS](https://tailwindcss.com/)** - Utility-first CSS framework 
+- **[Nginx](https://www.nginx.com/)** - Web server for deployment
 
 ---
 
@@ -126,20 +141,3 @@ The production-ready files will be output to the `dist` directory.
 ├── vite.config.js     # Vite configuration
 └── README.md          # Documentation
 ```
-
----
-
-## 🛠️ Technologies Used
-
-This project is built with:
-
-- **[React](https://reactjs.org/)** - Frontend framework
-- **[Vite](https://vitejs.dev/)** - Fast development tooling
-- **[JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)** - Programming language
-- **[React Router](https://reactrouter.com/)** - Client-side routing
-- **[Mantine](https://mantine.dev/)** - UI component library
-- **[Amazon EC2](https://aws.amazon.com/ec2/)** - Hosting infrastructure
-- **[Docker](https://www.docker.com/)** - Containerization
-- **[GitHub Actions](https://github.com/features/actions)** - CI/CD automation
-- **(Coming Soon) [Tailwind CSS](https://tailwindcss.com/)** - Utility-first CSS framework 
-- **[Nginx](https://www.nginx.com/)** - Web server for deployment
