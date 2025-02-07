@@ -1,7 +1,7 @@
 # ---------
 # Stage 1: Build the React App using Node
 # ---------
-    FROM node:18-alpine AS builder
+    FROM node:22-alpine AS builder
     WORKDIR /app
     
     # Copy package files and install dependencies
@@ -31,7 +31,7 @@
     COPY nginx.conf /etc/nginx/conf.d/default.conf
     
     # Expose port
-    EXPOSE 80 443
+    EXPOSE 80
     
     # Start Nginx
     CMD ["nginx", "-g", "daemon off;"]
