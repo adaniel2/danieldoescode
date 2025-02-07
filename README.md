@@ -10,7 +10,7 @@ This demo quickly goes through all the implemented features as of Feb 5th, 2025 
 
 https://github.com/user-attachments/assets/855dfca6-934e-4205-94dd-d93af862cd3c
 
-Check out the full website here: [danieldoescode.com](https://danieldoescode.com) *(coming soon)*
+Check out the full project here: [danieldoescode.com](https://danieldoescode.com/projects/voyis)
 
 ---
 
