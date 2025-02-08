@@ -13,9 +13,9 @@ jobs:
       - name: Deploy to EC2 via SSH
         uses: appleboy/ssh-action@v0.1.7
         with:
-          host: ${{ secrets.DDC_HOST }}         # EC2 public IP or hostname
-          username: ${{ secrets.DDC.USER }}       # e.g., "ec2-user" or "ubuntu"
-          key: ${{ secrets.DDC_SSH_KEY }}         # Your private SSH key (set in GitHub Secrets)
+          host: ${{ secrets.DDC_HOST }}
+          username: ${{ secrets.DDC.USER }}
+          key: ${{ secrets.DDC_SSH_KEY }}
           script: |
             # Change to your repository directory on EC2
             cd ~/danieldoescode
