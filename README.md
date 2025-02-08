@@ -8,6 +8,8 @@
 
 This demo quickly goes through all the implemented features as of Feb 5th, 2025 for the Voyis project.
 
+This project/challenge had a 2 week development deadline.
+
 https://github.com/user-attachments/assets/855dfca6-934e-4205-94dd-d93af862cd3c
 
 Check out the full project here: [danieldoescode.com](https://danieldoescode.com/projects/voyis)
