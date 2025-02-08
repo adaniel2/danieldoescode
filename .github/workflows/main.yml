@@ -14,7 +14,7 @@ jobs:
         uses: appleboy/ssh-action@v0.1.7
         with:
           host: ${{ secrets.DDC_HOST }}
-          username: ${{ secrets.DDC.USER }}
+          username: ${{ secrets.DDC_USER }}
           key: ${{ secrets.DDC_SSH_KEY }}
           script: |
             # Change to your repository directory on EC2
